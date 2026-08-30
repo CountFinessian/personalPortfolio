@@ -59,9 +59,35 @@
       inset: 0;
       z-index: 0;
       background:
-        radial-gradient(circle at 50% 45%, rgba(0, 120, 215, 0.42) 0%, rgba(10, 22, 55, 0.85) 48%, #050810 100%),
-        radial-gradient(circle at 18% 78%, rgba(99, 102, 241, 0.22) 0%, transparent 52%),
-        radial-gradient(circle at 82% 18%, rgba(6, 182, 212, 0.18) 0%, transparent 52%);
+        radial-gradient(ellipse at 50% 42%, rgba(0, 120, 215, 0.52) 0%, rgba(8, 18, 48, 0.88) 50%, #040710 100%),
+        radial-gradient(ellipse at 14% 80%, rgba(99, 102, 241, 0.28) 0%, transparent 55%),
+        radial-gradient(ellipse at 86% 15%, rgba(6, 182, 212, 0.22) 0%, transparent 55%),
+        radial-gradient(ellipse at 70% 75%, rgba(168, 85, 247, 0.14) 0%, transparent 45%);
+      overflow: hidden;
+    }
+    #wallpaper::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(56,189,248,0.045) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(56,189,248,0.045) 1px, transparent 1px);
+      background-size: 64px 64px;
+      mask-image: radial-gradient(ellipse at 50% 60%, rgba(0,0,0,0.6) 0%, transparent 72%);
+    }
+    #wallpaper::after {
+      content: '';
+      position: absolute;
+      width: 340px; height: 340px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(0,120,215,0.18) 0%, transparent 70%);
+      top: 12%; left: 58%;
+      animation: orbitOrb 18s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    @keyframes orbitOrb {
+      from { transform: translate(0, 0) scale(1); }
+      to   { transform: translate(-40px, 30px) scale(1.12); }
     }
 
     /* Desktop Surface */
@@ -78,22 +104,22 @@
     /* Desktop Shortcut Icons */
     .dicon {
       position: absolute;
-      width: 84px;
+      width: 96px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 5px;
-      padding: 6px 4px;
-      border-radius: 6px;
+      gap: 6px;
+      padding: 8px 6px;
+      border-radius: 8px;
       cursor: pointer;
       border: 1px solid transparent;
-      transition: background 0.12s, border-color 0.12s;
+      transition: background 0.14s, border-color 0.14s, transform 0.12s;
       z-index: 20;
     }
-    .dicon:hover { background: rgba(255, 255, 255, 0.1); border-color: rgba(255, 255, 255, 0.16); }
-    .dicon.selected { background: rgba(0, 120, 215, 0.28); border-color: rgba(0, 120, 215, 0.6); }
-    .dicon .ico { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; pointer-events: none; }
-    .dicon .lbl { font-size: 0.72rem; color: #fff; text-align: center; line-height: 1.25; text-shadow: 0 1px 4px rgba(0,0,0,0.9); pointer-events: none; }
+    .dicon:hover { background: rgba(255, 255, 255, 0.13); border-color: rgba(255, 255, 255, 0.22); transform: translateY(-1px); }
+    .dicon.selected { background: rgba(0, 120, 215, 0.35); border-color: rgba(0, 120, 215, 0.7); }
+    .dicon .ico { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; pointer-events: none; filter: drop-shadow(0 2px 8px rgba(0,0,0,0.7)); }
+    .dicon .lbl { font-size: 0.82rem; font-weight: 500; color: #fff; text-align: center; line-height: 1.28; text-shadow: 0 1px 6px rgba(0,0,0,1), 0 2px 12px rgba(0,0,0,0.8); pointer-events: none; word-break: break-word; }
 
     /* ======================================================== */
     /* NATIVE-FEEL WINDOWS (DRAGGABLE & RESIZABLE) */
@@ -102,8 +128,8 @@
       position: fixed;
       background: #181d29;
       border: 1px solid var(--border);
-      border-radius: 8px;
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.65);
+      border-radius: 10px;
+      box-shadow: 0 20px 52px rgba(0, 0, 0, 0.7), 0 1px 0 rgba(255,255,255,0.06) inset;
       display: flex;
       flex-direction: column;
       overflow: hidden;
@@ -113,12 +139,12 @@
       transition: box-shadow 0.15s ease;
     }
     .win.focused {
-      border-color: rgba(0, 120, 215, 0.55);
-      box-shadow: 0 20px 56px rgba(0, 0, 0, 0.8), 0 0 14px rgba(0, 120, 215, 0.22);
+      border-color: rgba(0, 120, 215, 0.6);
+      box-shadow: 0 24px 64px rgba(0, 0, 0, 0.85), 0 0 0 1px rgba(0, 120, 215, 0.25), 0 0 18px rgba(0, 120, 215, 0.18);
     }
     .win.dragging {
-      opacity: 0.92;
-      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.9), 0 0 28px rgba(0, 120, 215, 0.4);
+      opacity: 0.93;
+      box-shadow: 0 36px 90px rgba(0, 0, 0, 0.92), 0 0 32px rgba(0, 120, 215, 0.35);
       cursor: grabbing !important;
     }
     .win.maximized {
@@ -134,24 +160,35 @@
 
     /* Window Titlebar */
     .titlebar {
-      height: 34px;
+      height: 36px;
       flex-shrink: 0;
-      background: var(--titlebar);
+      background: linear-gradient(180deg, #222d42 0%, var(--titlebar) 100%);
       display: flex;
       align-items: center;
       justify-content: space-between;
       padding-left: 12px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.07);
       cursor: grab;
       user-select: none;
       touch-action: none;
+      position: relative;
+    }
+    .titlebar::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 0; bottom: 0;
+      width: 3px;
+      background: var(--win-accent, var(--accent));
+      border-radius: 0 0 0 0;
+      opacity: 0.85;
     }
     .titlebar:active { cursor: grabbing; }
-    .win:not(.focused) .titlebar { background: var(--titlebar-blur); }
-    .titlebar-left { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; font-weight: 500; pointer-events: none; }
+    .win:not(.focused) .titlebar { background: linear-gradient(180deg, #1a2234 0%, var(--titlebar-blur) 100%); }
+    .win:not(.focused) .titlebar::before { opacity: 0.35; }
+    .titlebar-left { display: flex; align-items: center; gap: 8px; font-size: 0.79rem; font-weight: 500; pointer-events: none; padding-left: 2px; }
     .wbtns { display: flex; height: 100%; }
     .wbtn {
-      width: 44px;
+      width: 46px;
       height: 100%;
       display: flex;
       align-items: center;
@@ -161,7 +198,7 @@
       transition: background 0.1s, color 0.1s;
       pointer-events: all;
     }
-    .wbtn:hover { background: rgba(255, 255, 255, 0.1); color: #fff; }
+    .wbtn:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
     .wbtn.close:hover { background: #e81123; color: #fff; }
 
     /* 8-Directional Window Resize Handles */
@@ -472,6 +509,691 @@
     }
     .bin-item-btn:hover { background: #1084d8; }
 
+    /* ======================================================== */
+    /* DEBIAN LINUX VM & COMPUTER NETWORKING LAB WINDOW        */
+    /* ======================================================== */
+    .vm-menubar {
+      height: 26px;
+      background: #182030;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 14px;
+      font-size: 0.74rem;
+      color: #94a3b8;
+      user-select: none;
+    }
+    .vm-menu-item { cursor: pointer; transition: color 0.12s; }
+    .vm-menu-item:hover { color: #fff; }
+    .vm-scenario-bar {
+      background: #111724;
+      border-bottom: 1px solid var(--border);
+      padding: 6px 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+    .vm-tab-btn {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      color: #cbd5e1;
+      font-size: 0.72rem;
+      font-family: inherit;
+      padding: 4px 9px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: background 0.12s, border-color 0.12s, color 0.12s;
+    }
+    .vm-tab-btn:hover { background: rgba(255, 255, 255, 0.14); color: #fff; }
+    .vm-tab-btn.active { background: #0284c7; border-color: #38bdf8; color: #fff; font-weight: 600; }
+    .vm-tab-btn.danger { background: rgba(239, 68, 68, 0.18); border-color: rgba(239, 68, 68, 0.4); color: #f87171; }
+    .vm-tab-btn.danger:hover { background: rgba(239, 68, 68, 0.35); color: #fff; }
+    .vm-body {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #090d16;
+      overflow: hidden;
+      position: relative;
+    }
+    .vm-pane { display: none; flex: 1; flex-direction: column; overflow: hidden; }
+    .vm-pane.active { display: flex; }
+    .vm-top-stage {
+      height: 195px;
+      background: radial-gradient(circle at center, #131d33 0%, #070a12 100%);
+      border-bottom: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+    .vm-stage-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 5px 12px;
+      background: rgba(0, 0, 0, 0.4);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      font-size: 0.72rem;
+      color: #94a3b8;
+    }
+    .topo-canvas {
+      flex: 1;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 14px;
+    }
+    .topo-grid {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+      position: relative;
+    }
+    .topo-node {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      background: rgba(26, 36, 52, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 6px;
+      padding: 4px 6px;
+      cursor: pointer;
+      transition: transform 0.12s, border-color 0.12s, box-shadow 0.12s;
+      z-index: 2;
+      min-width: 58px;
+      text-align: center;
+      position: relative;
+    }
+    .topo-node:hover { transform: translateY(-2px); border-color: #38bdf8; box-shadow: 0 4px 14px rgba(56, 189, 248, 0.35); }
+    .topo-node.active-tx { border-color: #ec4899; box-shadow: 0 0 14px rgba(236, 72, 153, 0.7); animation: nodePulse 0.5s infinite alternate; }
+    .topo-node.active-rx { border-color: #22c55e; box-shadow: 0 0 14px rgba(34, 197, 94, 0.7); animation: nodePulse 0.5s infinite alternate; }
+    @keyframes nodePulse { from { transform: scale(1); } to { transform: scale(1.05); } }
+    .topo-node-title { font-size: 0.7rem; font-weight: 700; color: #fff; display: flex; align-items: center; gap: 3px; }
+    .topo-node-ip { font-size: 0.6rem; color: #94a3b8; font-family: monospace; }
+    .topo-badge {
+      position: absolute;
+      top: -22px;
+      left: 50%;
+      transform: translateX(-50%);
+      white-space: nowrap;
+      font-size: 0.58rem;
+      font-weight: 700;
+      padding: 2px 6px;
+      border-radius: 4px;
+      z-index: 10;
+      pointer-events: none;
+      animation: badgePop 0.2s ease-out;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.6);
+    }
+    .topo-badge.tx { background: #ec4899; color: #fff; }
+    .topo-badge.rx { background: #10b981; color: #fff; }
+    .topo-badge.info { background: #0284c7; color: #fff; }
+    .topo-badge.warn { background: #f59e0b; color: #000; }
+    .topo-badge.purple { background: #a855f7; color: #fff; }
+    @keyframes badgePop {
+      0% { opacity: 0; transform: translateX(-50%) translateY(3px) scale(0.9); }
+      100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
+    }
+    .topo-link-line {
+      position: absolute;
+      top: 50%;
+      left: 24px;
+      right: 24px;
+      height: 2px;
+      background: rgba(56, 189, 248, 0.2);
+      z-index: 1;
+      transform: translateY(-50%);
+    }
+    .vm-terminal {
+      flex: 1;
+      background: #020612;
+      display: flex;
+      flex-direction: column;
+      font-family: 'Consolas', 'Courier New', monospace;
+      font-size: 0.78rem;
+      padding: 8px 12px;
+      overflow-y: auto;
+      color: #e2e8f0;
+    }
+    .vm-log-line { line-height: 1.4; word-break: break-all; margin-bottom: 2px; }
+    .vm-log-prompt { color: #38bdf8; font-weight: 600; }
+    .vm-log-cmd { color: #f8fafc; font-weight: 600; }
+    .vm-log-scapy { color: #ec4899; }
+    .vm-log-tcp { color: #a855f7; }
+    .vm-log-dv { color: #f59e0b; }
+    .vm-log-success { color: #22c55e; font-weight: 600; }
+    .vm-log-info { color: #38bdf8; }
+    .vm-term-input-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .vm-term-input {
+      flex: 1;
+      background: transparent;
+      border: none;
+      color: #fff;
+      font-family: inherit;
+      font-size: inherit;
+      outline: none;
+    }
+    .vm-statusbar {
+      height: 22px;
+      background: #0e131f;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 10px;
+      font-size: 0.67rem;
+      color: #64748b;
+    }
+    .code-viewer-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #0a0d16;
+      overflow: hidden;
+    }
+    .code-tabs {
+      display: flex;
+      background: #0d121e;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+    }
+    .code-tab {
+      padding: 6px 12px;
+      font-size: 0.72rem;
+      color: #94a3b8;
+      cursor: pointer;
+      border-right: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+    }
+    .code-tab:hover { background: rgba(255, 255, 255, 0.05); color: #fff; }
+    .code-tab.active { background: #151c2c; color: #38bdf8; font-weight: 600; border-top: 2px solid #38bdf8; }
+    .code-content {
+      flex: 1;
+      padding: 10px 0;
+      overflow-y: auto;
+      overflow-x: hidden;
+      font-family: 'Consolas', 'Fira Code', 'Cascadia Code', 'Courier New', monospace;
+      font-size: 0.77rem;
+      line-height: 1.5;
+      color: #e2e8f0;
+      background: #07090f;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+    .code-line {
+      display: flex;
+      min-height: 1.5em;
+      padding: 0 16px 0 0;
+      transition: background 0.08s;
+    }
+    .code-line:hover {
+      background: rgba(255, 255, 255, 0.04);
+    }
+    .line-num {
+      width: 36px;
+      min-width: 36px;
+      text-align: right;
+      padding-right: 12px;
+      margin-right: 12px;
+      color: #475569;
+      font-size: 0.71rem;
+      user-select: none;
+      border-right: 1px solid rgba(255, 255, 255, 0.08);
+      flex-shrink: 0;
+    }
+    .line-code {
+      flex: 1;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: break-word;
+    }
+
+    /* Syntax Highlighting Tokens */
+    .syn-kwd   { color: #c084fc; font-weight: 600; } /* Keywords (purple) */
+    .syn-type  { color: #38bdf8; font-weight: 500; } /* Types (cyan) */
+    .syn-prep  { color: #fb923c; font-weight: 600; } /* Preprocessor (orange) */
+    .syn-str   { color: #a7f3d0; }                   /* Strings & Headers (mint) */
+    .syn-num   { color: #fbbf24; }                   /* Numbers (amber) */
+    .syn-comm  { color: #64748b; font-style: italic; } /* Comments (muted slate) */
+    .syn-func  { color: #60a5fa; }                   /* Functions & Methods (blue) */
+    .syn-macro { color: #34d399; font-weight: 600; } /* Constants & Macros (emerald) */
+
+    /* Live 5-Layer Stack Ribbon & Full-Stack Inspector */
+    .live-stack-ribbon {
+      height: 32px;
+      background: #0b101c;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+      display: flex;
+      align-items: center;
+      padding: 0 10px;
+      gap: 6px;
+      overflow-x: auto;
+      font-size: 0.69rem;
+      user-select: none;
+    }
+    .ribbon-tag {
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-weight: 600;
+      white-space: nowrap;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      transition: opacity 0.12s, transform 0.12s;
+    }
+    .ribbon-tag:hover { transform: translateY(-1px); opacity: 0.95; }
+    .tag-l5 { background: rgba(236, 72, 153, 0.18); border: 1px solid rgba(236, 72, 153, 0.45); color: #f472b6; }
+    .tag-l4 { background: rgba(168, 85, 247, 0.18); border: 1px solid rgba(168, 85, 247, 0.45); color: #c084fc; }
+    .tag-l3 { background: rgba(56, 189, 248, 0.18); border: 1px solid rgba(56, 189, 248, 0.45); color: #38bdf8; }
+    .tag-l2 { background: rgba(16, 185, 129, 0.18); border: 1px solid rgba(16, 185, 129, 0.45); color: #34d399; }
+    .tag-l1 { background: rgba(245, 158, 11, 0.18); border: 1px solid rgba(245, 158, 11, 0.45); color: #fbbf24; }
+
+    .stack-visualizer-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #080c16;
+      overflow-y: auto;
+      padding: 14px;
+      gap: 12px;
+    }
+    .stack-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .stack-layer-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .stack-card {
+      background: #0e1526;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .stack-card:hover { border-color: rgba(56, 189, 248, 0.4); }
+    .stack-card-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 12px;
+      font-size: 0.76rem;
+      font-weight: 700;
+      cursor: pointer;
+    }
+    .stack-card-body {
+      padding: 10px 12px;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+      gap: 8px;
+      font-size: 0.73rem;
+      background: rgba(0, 0, 0, 0.25);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .stack-field {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .stack-field-label {
+      font-size: 0.62rem;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 2px;
+    }
+    .stack-field-val {
+      font-family: monospace;
+      font-weight: 600;
+      color: #e2e8f0;
+      word-break: break-all;
+    }
+
+    /* Live Explainer Narrative Banner */
+    .live-explainer-banner {
+      background: rgba(14, 165, 233, 0.08);
+      border-top: 1px solid rgba(56, 189, 248, 0.2);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      padding: 6px 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.73rem;
+      color: #bae6fd;
+      line-height: 1.35;
+    }
+    .live-explainer-banner i { color: #38bdf8; flex-shrink: 0; }
+
+    /* Lab Test Suite Pane */
+    .lab-tests-pane {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: #080c16;
+      overflow-y: auto;
+      padding: 14px;
+      gap: 12px;
+    }
+    .lab-test-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
+      gap: 12px;
+    }
+    .lab-test-card {
+      background: #0e1526;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      transition: border-color 0.15s, box-shadow 0.15s;
+    }
+    .lab-test-card:hover { border-color: rgba(56, 189, 248, 0.4); box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4); }
+    .lab-test-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .lab-test-title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .lab-test-desc {
+      font-size: 0.72rem;
+      color: #94a3b8;
+      line-height: 1.45;
+    }
+    .lab-test-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-top: 4px;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .lab-test-btn {
+      background: #1e293b;
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      font-size: 0.71rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: background 0.12s, transform 0.12s;
+    }
+    .lab-test-btn:hover { background: #0284c7; color: #fff; transform: translateY(-1px); }
+    .lab-test-btn.primary { background: #0284c7; color: #fff; border-color: #38bdf8; }
+    .lab-test-btn.primary:hover { background: #0369a1; }
+    .lab-test-status {
+      font-size: 0.71rem;
+      font-weight: 600;
+      font-family: monospace;
+    }
+
+    /* Lab View Switcher Tabs */
+    .lab-view-tabs {
+      display: flex;
+      gap: 4px;
+      padding: 6px 12px;
+      background: #090e1a;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      overflow-x: auto;
+    }
+    .lab-view-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      white-space: nowrap;
+      transition: background 0.12s, color 0.12s, border-color 0.12s;
+    }
+    .lab-view-btn:hover { background: rgba(255, 255, 255, 0.08); color: #fff; }
+    .lab-view-btn.active { background: rgba(56, 189, 248, 0.15); color: #38bdf8; border-color: rgba(56, 189, 248, 0.4); font-weight: 700; }
+
+    /* Lab Specific Visualizer Layouts */
+    .lab-vis-box {
+      display: none;
+      width: 100%;
+      height: 100%;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .lab-vis-box.active { display: flex; }
+
+    /* Lab 04 MAC Table Visualizer */
+    .mactable-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      width: 100%;
+      height: 100%;
+    }
+    .mactable-card {
+      background: #090e1a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 0.72rem;
+    }
+    .mactable-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      font-family: monospace;
+      font-size: 0.7rem;
+    }
+    .mactable-table th {
+      text-align: left;
+      padding: 4px 6px;
+      background: rgba(255, 255, 255, 0.04);
+      color: #94a3b8;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+    .mactable-table td {
+      padding: 4px 6px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+      color: #e2e8f0;
+    }
+
+    /* Lab 06 CIDR Prefix Matcher */
+    .cidr-vis-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 12px;
+      font-size: 0.73rem;
+    }
+    .cidr-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 6px 8px;
+      border-radius: 4px;
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid rgba(255, 255, 255, 0.04);
+      font-family: monospace;
+    }
+    .cidr-row.matched {
+      background: rgba(56, 189, 248, 0.12);
+      border-color: rgba(56, 189, 248, 0.4);
+      color: #38bdf8;
+      font-weight: 700;
+    }
+
+    /* Lab 08 DV Cost Matrix */
+    .dv-matrix-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: monospace;
+      font-size: 0.72rem;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    .dv-matrix-table th, .dv-matrix-table td {
+      padding: 6px 10px;
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+    .dv-matrix-table th { background: rgba(255, 255, 255, 0.04); color: #94a3b8; }
+    .dv-matrix-table td.active-cell { background: rgba(245, 158, 11, 0.15); color: #fbbf24; font-weight: 700; }
+
+    /* Lab 11 Sliding Window Stream Buffer */
+    .tcp-buffer-stream {
+      display: flex;
+      gap: 3px;
+      padding: 10px;
+      background: #090e1a;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      overflow-x: auto;
+      align-items: center;
+    }
+    .tcp-chunk {
+      min-width: 48px;
+      height: 38px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-family: monospace;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: #1e293b;
+      color: #94a3b8;
+    }
+    .tcp-chunk.acked { background: rgba(34, 197, 94, 0.2); border-color: rgba(34, 197, 94, 0.5); color: #22c55e; }
+    .tcp-chunk.in-flight { background: rgba(56, 189, 248, 0.2); border-color: rgba(56, 189, 248, 0.5); color: #38bdf8; }
+    .tcp-chunk.out-of-order { background: rgba(168, 85, 247, 0.25); border-color: rgba(168, 85, 247, 0.5); color: #c084fc; font-weight: 700; }
+    .tcp-chunk.gap { background: rgba(239, 68, 68, 0.15); border-color: rgba(239, 68, 68, 0.4); color: #f87171; border-style: dashed; }
+
+    /* Breadboard Robot Application Styles */
+    .robot-container {
+      display: flex;
+      flex-direction: column;
+      height: calc(100% - 38px);
+      background: #0b0f19;
+      color: #e2e8f0;
+      overflow: hidden;
+    }
+    .robot-tabs {
+      display: flex;
+      gap: 6px;
+      padding: 8px 12px;
+      background: #111726;
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+      overflow-x: auto;
+    }
+    .robot-pane {
+      display: none;
+      flex: 1;
+      overflow: hidden;
+      flex-direction: column;
+    }
+    .robot-pane.active {
+      display: flex;
+    }
+    .serial-term {
+      flex: 1;
+      background: #050811;
+      font-family: monospace;
+      font-size: 0.76rem;
+      padding: 12px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      color: #38bdf8;
+    }
+    .serial-line {
+      line-height: 1.4;
+      word-break: break-all;
+    }
+    .serial-controls {
+      display: flex;
+      gap: 8px;
+      padding: 8px 12px;
+      background: #0e1526;
+      border-top: 1px solid var(--border);
+    }
+    .serial-input {
+      flex: 1;
+      background: #050811;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 6px 10px;
+      color: #f8fafc;
+      font-family: monospace;
+      font-size: 0.76rem;
+      outline: none;
+    }
+    .serial-input:focus {
+      border-color: #a855f7;
+    }
+    .circuit-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 12px;
+      padding: 12px 0;
+    }
+    .circuit-card {
+      background: #0e1526;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 0.75rem;
+    }
+
+
     /* Taskbar */
     #taskbar {
       position: fixed;
@@ -479,9 +1201,11 @@
       left: 0;
       right: 0;
       height: var(--taskbar-h);
-      background: rgba(20, 26, 40, 0.9);
-      backdrop-filter: blur(24px);
-      border-top: 1px solid var(--border);
+      background: rgba(15, 20, 32, 0.88);
+      backdrop-filter: blur(32px) saturate(1.4);
+      -webkit-backdrop-filter: blur(32px) saturate(1.4);
+      border-top: 1px solid rgba(255,255,255,0.09);
+      box-shadow: 0 -1px 0 rgba(0,0,0,0.5);
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -494,35 +1218,108 @@
       transform: translateX(-50%);
       display: flex;
       align-items: center;
-      gap: 5px;
+      gap: 4px;
     }
     .tb-btn {
-      width: 40px;
-      height: 40px;
-      border-radius: 6px;
+      width: 42px;
+      height: 42px;
+      border-radius: 7px;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
       position: relative;
-      transition: background 0.12s;
+      transition: background 0.12s, transform 0.1s;
     }
-    .tb-btn:hover { background: rgba(255, 255, 255, 0.1); }
+    .tb-btn:hover { background: rgba(255, 255, 255, 0.12); transform: scale(1.04); }
+    .tb-btn:active { transform: scale(0.96); }
+    /* Running indicator dot */
     .tb-btn.active::after {
       content: '';
       position: absolute;
-      bottom: 3px;
-      width: 16px;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 18px;
       height: 3px;
       background: var(--accent);
       border-radius: 2px;
+      box-shadow: 0 0 6px rgba(0,120,215,0.7);
     }
-    .tb-tray { display: flex; align-items: center; gap: 8px; font-size: 0.78rem; color: #e2e8f0; }
-    .tb-tray-btn { display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 4px; cursor: pointer; }
-    .tb-tray-btn:hover { background: rgba(255, 255, 255, 0.1); }
+    /* Open but not focused */
+    .tb-btn.open::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 6px;
+      height: 3px;
+      background: rgba(255,255,255,0.45);
+      border-radius: 2px;
+    }
+    .tb-tray { display: flex; align-items: center; gap: 6px; font-size: 0.78rem; color: #e2e8f0; }
+    .tb-tray-btn { display: flex; align-items: center; gap: 5px; padding: 4px 8px; border-radius: 6px; cursor: pointer; transition: background 0.12s; }
+    .tb-tray-btn:hover { background: rgba(255, 255, 255, 0.12); }
     .tray-clock { display: flex; flex-direction: column; align-items: flex-end; line-height: 1.2; }
-    .tray-time { font-weight: 600; }
-    .tray-date { font-size: 0.7rem; color: var(--muted); }
+    .tb-weather-widget {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 3px 8px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.12s, transform 0.1s;
+      user-select: none;
+    }
+    .tb-weather-widget:hover { background: rgba(255, 255, 255, 0.12); }
+    .tb-weather-widget:active { transform: scale(0.97); }
+
+    /* Weather Flyout */
+    #weather-flyout {
+      bottom: 56px;
+      left: 12px;
+      width: 320px;
+      padding: 16px;
+      gap: 12px;
+    }
+
+
+
+    /* Desktop right-click context menu */
+    #ctx-menu {
+      position: fixed;
+      background: rgba(22, 28, 44, 0.97);
+      backdrop-filter: blur(28px);
+      border: 1px solid rgba(255,255,255,0.12);
+      border-radius: 8px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.7);
+      padding: 5px;
+      min-width: 200px;
+      z-index: 1200;
+      display: none;
+      flex-direction: column;
+      gap: 1px;
+      animation: flyIn 0.18s cubic-bezier(0.16,1,0.3,1);
+    }
+    #ctx-menu.open { display: flex; }
+    .ctx-item {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 7px 12px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    .ctx-item:hover { background: rgba(0,120,215,0.25); color: #fff; }
+    .ctx-item.muted { color: #64748b; font-size: 0.74rem; }
+    .ctx-item.muted:hover { background: rgba(255,255,255,0.06); color: #94a3b8; cursor: default; }
+    .ctx-sep { height: 1px; background: rgba(255,255,255,0.08); margin: 3px 8px; }
+
+
 
     /* Flyouts */
     .flyout {
@@ -688,61 +1485,6 @@
       transition: opacity 0.06s ease-out;
     }
 
-    /* Lock Screen (Default Landing - 100% Solid & Opaque) */
-    #lock {
-      position: fixed;
-      inset: 0;
-      z-index: 999999;
-      background-color: #02050e;
-      background: 
-        radial-gradient(circle at 50% 35%, rgba(0, 90, 158, 0.7) 0%, #09132b 55%, #02050e 100%),
-        url('https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=1920&q=80') center/cover no-repeat;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      color: #fff;
-      opacity: 1;
-      transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease;
-    }
-    #lock.gone { transform: translateY(-100vh); opacity: 0; pointer-events: none; }
-    .lock-clock { font-size: 5.5rem; font-weight: 700; line-height: 1; letter-spacing: -2px; margin-bottom: 6px; text-shadow: 0 4px 16px rgba(0,0,0,0.6); }
-    .lock-date  { font-size: 1.2rem; color: #cbd5e1; margin-bottom: 44px; text-shadow: 0 2px 8px rgba(0,0,0,0.6); }
-    .lock-card  { display: flex; flex-direction: column; align-items: center; gap: 14px; }
-    .lock-avatar {
-      width: 100px;
-      height: 100px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #0078d4, #8b5cf6);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 2.5rem;
-      font-weight: 800;
-      border: 2px solid rgba(255, 255, 255, 0.22);
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
-    }
-    .lock-name { font-size: 1.5rem; font-weight: 700; text-shadow: 0 2px 10px rgba(0,0,0,0.7); }
-    .lock-sub  { font-size: 0.82rem; color: #94a3b8; margin-top: -6px; text-shadow: 0 1px 6px rgba(0,0,0,0.7); }
-    .lock-btn {
-      background: var(--accent);
-      color: #fff;
-      border: none;
-      padding: 11px 36px;
-      border-radius: 6px;
-      font-family: inherit;
-      font-size: 0.98rem;
-      font-weight: 600;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      box-shadow: 0 4px 20px rgba(0, 120, 215, 0.5);
-      transition: background 0.15s, transform 0.15s;
-    }
-    .lock-btn:hover { background: #1084d8; transform: scale(1.04); }
-    .lock-hint { font-size: 0.75rem; color: #64748b; margin-top: 6px; }
-
     /* Rubberband selection box */
     #rband {
       position: absolute;
@@ -752,9 +1494,74 @@
       background: rgba(0, 120, 215, 0.18);
       pointer-events: none;
     }
+
+    /* System Power Spinner & Screen Off Button */
+    .win-spinner {
+      width: 38px;
+      height: 38px;
+      border: 3.5px solid rgba(255, 255, 255, 0.15);
+      border-top-color: #38bdf8;
+      border-radius: 50%;
+      animation: winSpin 0.9s cubic-bezier(0.5, 0.1, 0.5, 0.9) infinite;
+    }
+    @keyframes winSpin {
+      to { transform: rotate(360deg); }
+    }
+    #screen-power-btn {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: #0f172a;
+      border: 2px solid #334155;
+      color: #60a5fa;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      outline: none;
+      box-shadow: 0 0 28px rgba(96, 165, 250, 0.25);
+      transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    #screen-power-btn:hover {
+      background: #1e293b;
+      border-color: #60a5fa;
+      color: #93c5fd;
+      transform: scale(1.1);
+      box-shadow: 0 0 45px rgba(96, 165, 250, 0.6);
+    }
+    #screen-power-btn:active {
+      transform: scale(0.95);
+      background: #2563eb;
+      color: #ffffff;
+    }
   </style>
 </head>
 <body>
+
+<!-- System Power State Overlays (Shut Down / Screen Off / Reboot) -->
+<div id="power-screen-overlay" style="display:none;position:fixed;inset:0;z-index:999999;background:#000;color:#fff;font-family:var(--font);flex-direction:column;align-items:center;justify-content:center;user-select:none">
+  <!-- Mode 1: Shutting down / Restarting message -->
+  <div id="power-busy-view" style="display:none;flex-direction:column;align-items:center;gap:20px">
+    <div class="win-spinner"></div>
+    <div id="power-busy-txt" style="font-size:1.2rem;font-weight:400;color:#f8fafc;letter-spacing:0.5px">Shutting down</div>
+  </div>
+
+  <!-- Mode 2: Screen Off with Power Button in Middle -->
+  <div id="power-off-view" style="display:none;flex-direction:column;align-items:center;gap:22px;text-align:center">
+    <button id="screen-power-btn" onclick="powerOnPC()" title="Power On">
+      <i data-lucide="power" style="width:38px;height:38px"></i>
+    </button>
+    <div style="font-size:0.86rem;color:#94a3b8;font-weight:500;letter-spacing:0.5px">Click to Power On</div>
+  </div>
+
+  <!-- Mode 3: BIOS / Reboot sequence -->
+  <div id="power-boot-view" style="display:none;flex-direction:column;align-items:center;gap:28px">
+    <svg width="52" height="52" viewBox="0 0 24 24" fill="#00a4ef">
+      <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
+    </svg>
+    <div class="win-spinner"></div>
+  </div>
+</div>
 
 <!-- Screen Brightness Dimming Overlay -->
 <div id="brightness-overlay"></div>
@@ -762,51 +1569,45 @@
 <!-- Wallpaper -->
 <div id="wallpaper"></div>
 
-<!-- Windows 11 Sign-In / Lock Screen (Default Landing) -->
-<div id="lock">
-  <div class="lock-clock" id="lock-clock"></div>
-  <div class="lock-date"  id="lock-date"></div>
-  <div class="lock-card">
-    <div class="lock-avatar">JW</div>
-    <div class="lock-name">Jacob Williams</div>
-    <div class="lock-sub">Software Engineer &amp; Robotics Enthusiast</div>
-    <button class="lock-btn" id="lock-btn">
-      Sign In &nbsp;<i data-lucide="arrow-right" style="width:16px;height:16px"></i>
-    </button>
-    <div class="lock-hint">Press Enter or click Sign In</div>
-  </div>
-</div>
-
 <!-- Desktop Surface -->
 <div id="desktop">
   <div id="rband"></div>
 
   <!-- Desktop Icons -->
-  <div class="dicon" id="dic-ps" style="top:20px;left:20px" ondblclick="show('ps-win')">
-    <div class="ico"><i data-lucide="terminal-square" style="width:38px;height:38px;color:#60a5fa"></i></div>
+  <div class="dicon" id="dic-vm" style="top:20px;left:20px" title="Virtual Networking Lab — Full L1–L5 TCP/IP stack built in Python from scratch (BYU CS 460)" onclick="show('vm-win')" ondblclick="show('vm-win')">
+    <div class="ico"><i data-lucide="network" style="width:42px;height:42px;color:#38bdf8"></i></div>
+    <span class="lbl">Virtual Networking Lab</span>
+  </div>
+  <div class="dicon" id="dic-robot" style="top:140px;left:20px" title="Breadboard Robot — Embedded C++ firmware on Arduino hardware with line-following and obstacle detection" onclick="openRobotApp()" ondblclick="openRobotApp()">
+    <div class="ico"><i data-lucide="bot" style="width:42px;height:42px;color:#a855f7"></i></div>
+    <span class="lbl">Robot C++ Project</span>
+  </div>
+  <div class="dicon" id="dic-ps" style="top:260px;left:20px" title="PowerShell — Interactive Python 3 REPL terminal" onclick="show('ps-win')" ondblclick="show('ps-win')">
+    <div class="ico"><i data-lucide="terminal-square" style="width:42px;height:42px;color:#60a5fa"></i></div>
     <span class="lbl">PowerShell</span>
   </div>
-  <div class="dicon" id="dic-ex" style="top:110px;left:20px" ondblclick="openExplorer('root');show('ex-win')">
-    <div class="ico"><i data-lucide="folder" style="width:38px;height:38px;color:#fbbf24"></i></div>
-    <span class="lbl">File Explorer</span>
+  <div class="dicon" id="dic-resume" style="top:20px;left:136px" title="Resume.pdf — Jacob Williams' full resume" onclick="show('pdf-win')" ondblclick="show('pdf-win')">
+    <div class="ico"><i data-lucide="file-text" style="width:42px;height:42px;color:#ef4444"></i></div>
+    <span class="lbl">Resume.pdf</span>
   </div>
-  <div class="dicon" id="dic-photos" style="top:200px;left:20px" ondblclick="openPhotosApp(0)">
-    <div class="ico"><i data-lucide="images" style="width:38px;height:38px;color:#ec4899"></i></div>
-    <span class="lbl">Photos</span>
+  <div class="dicon" id="dic-photos" style="top:140px;left:136px" title="Peace Corps Photos — 22 photos from 6-month service in rural Thailand" onclick="openPhotosApp(0)" ondblclick="openPhotosApp(0)">
+    <div class="ico"><i data-lucide="images" style="width:42px;height:42px;color:#ec4899"></i></div>
+    <span class="lbl">Peace Corps Photos</span>
   </div>
-  <div class="dicon" id="dic-pc" style="top:20px;left:114px" ondblclick="openExplorer('root');show('ex-win')">
-    <div class="ico"><i data-lucide="monitor" style="width:38px;height:38px;color:#3b82f6"></i></div>
-    <span class="lbl">This PC</span>
+  <div class="dicon" id="dic-notepad" style="top:20px;left:252px" title="Welcome.txt — Recruiter guide and tour of this portfolio" onclick="show('notepad-win')" ondblclick="show('notepad-win')">
+    <div class="ico"><i data-lucide="file-text" style="width:42px;height:42px;color:#38bdf8"></i></div>
+    <span class="lbl">Welcome.txt</span>
   </div>
-  <div class="dicon" id="dic-bin" style="top:110px;left:114px">
-    <div class="ico"><i data-lucide="trash-2" style="width:38px;height:38px;color:#94a3b8"></i></div>
+  <div class="dicon" id="dic-bin" style="top:140px;left:252px" title="Recycle Bin — Drop icons here to delete them" onclick="show('bin-win')" ondblclick="show('bin-win')">
+    <div class="ico"><i data-lucide="trash-2" style="width:42px;height:42px;color:#94a3b8"></i></div>
     <span class="lbl">Recycle Bin</span>
   </div>
 
+
   <!-- ======================================================== -->
-  <!-- WINDOW 1: POWERSHELL (OPENS UPON LOGIN)                  -->
+  <!-- WINDOW 1: POWERSHELL                                      -->
   <!-- ======================================================== -->
-  <div class="win minimized" id="ps-win" style="top:60px;left:220px;width:680px;height:420px">
+  <div class="win minimized" id="ps-win" style="top:60px;left:calc(50% - 350px);width:700px;height:440px">
     <!-- 8 Resize Handles -->
     <div class="resize-handle resize-n"  data-win="ps-win" data-dir="n"></div>
     <div class="resize-handle resize-s"  data-win="ps-win" data-dir="s"></div>
@@ -817,10 +1618,10 @@
     <div class="resize-handle resize-sw" data-win="ps-win" data-dir="sw"></div>
     <div class="resize-handle resize-se" data-win="ps-win" data-dir="se"></div>
 
-    <div class="titlebar" data-win="ps-win">
+    <div class="titlebar" data-win="ps-win" style="--win-accent:#60a5fa">
       <div class="titlebar-left">
         <i data-lucide="terminal" style="width:14px;height:14px;color:#60a5fa"></i>
-        Administrator: Windows PowerShell — Python 3
+        <span>Administrator: Windows PowerShell — Python 3</span>
       </div>
       <div class="wbtns">
         <div class="wbtn" onclick="minimize('ps-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
@@ -833,7 +1634,7 @@
       <div class="ps-line">Windows PowerShell</div>
       <div class="ps-line">Copyright (C) Microsoft Corporation. All rights reserved.</div>
       <div class="ps-line" style="margin-bottom:8px"></div>
-      <div class="ps-line"><span class="ps-prompt">PS C:\Users\JacobWilliams\> </span>python</div>
+      <div class="ps-line"><span class="ps-prompt">PS C:\Users\JacobWilliams\&gt; </span>python</div>
       <div class="ps-line">Python 3.11.8 (tags/v3.11.8:d7a80f1, Feb  6 2024) [MSC v.1937 64 bit (AMD64)] on win32</div>
       <div class="ps-line">Type "help", "copyright", "credits" or "license" for more information.</div>
       <div class="ps-line" style="margin-bottom:8px"></div>
@@ -851,6 +1652,58 @@
   </div>
 
   <!-- ======================================================== -->
+  <!-- WINDOW: NOTEPAD (WELCOME NOTE)                           -->
+  <!-- ======================================================== -->
+  <div class="win focused" id="notepad-win" style="top:70px;left:calc(50% - 270px);width:540px;height:430px;z-index:102">
+    <!-- 8 Resize Handles -->
+    <div class="resize-handle resize-n"  data-win="notepad-win" data-dir="n"></div>
+    <div class="resize-handle resize-s"  data-win="notepad-win" data-dir="s"></div>
+    <div class="resize-handle resize-w"  data-win="notepad-win" data-dir="w"></div>
+    <div class="resize-handle resize-e"  data-win="notepad-win" data-dir="e"></div>
+    <div class="resize-handle resize-nw" data-win="notepad-win" data-dir="nw"></div>
+    <div class="resize-handle resize-ne" data-win="notepad-win" data-dir="ne"></div>
+    <div class="resize-handle resize-sw" data-win="notepad-win" data-dir="sw"></div>
+    <div class="resize-handle resize-se" data-win="notepad-win" data-dir="se"></div>
+
+    <div class="titlebar" data-win="notepad-win" style="--win-accent:#38bdf8">
+      <div class="titlebar-left">
+        <i data-lucide="file-text" style="width:14px;height:14px;color:#38bdf8"></i>
+        <span>Welcome.txt — Notepad</span>
+      </div>
+      <div class="wbtns">
+        <div class="wbtn" onclick="minimize('notepad-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
+        <div class="wbtn" onclick="toggleMax('notepad-win')"><i data-lucide="square" style="width:10px;height:10px"></i></div>
+        <div class="wbtn close" onclick="close_('notepad-win')"><i data-lucide="x" style="width:12px;height:12px"></i></div>
+      </div>
+    </div>
+
+    <!-- Notepad Menu Bar -->
+    <div style="display:flex;align-items:center;gap:12px;padding:3px 10px;background:#151c2a;border-bottom:1px solid var(--border);font-size:0.75rem;color:#cbd5e1">
+      <span style="cursor:pointer">File</span>
+      <span style="cursor:pointer">Edit</span>
+      <span style="cursor:pointer">Format</span>
+      <span style="cursor:pointer">View</span>
+      <span style="cursor:pointer">Help</span>
+    </div>
+
+    <!-- Notepad Text Area -->
+    <textarea id="notepad-textarea" style="flex:1;background:#0d111a;color:#e8f0fe;border:none;outline:none;padding:16px 18px;font-family:'Consolas','Segoe UI',monospace;font-size:0.92rem;line-height:1.75;resize:none;white-space:pre-wrap" spellcheck="false">
+Welcome to my PC! feel free to poke around.
+   </textarea>
+
+    <!-- Notepad Status Bar -->
+    <div style="display:flex;justify-content:space-between;padding:3px 12px;background:#151c2a;border-top:1px solid var(--border);font-size:0.68rem;color:#94a3b8">
+      <span>Ln 1, Col 1</span>
+      <div style="display:flex;gap:16px">
+        <span>100%</span>
+        <span>Windows (CRLF)</span>
+        <span>UTF-8</span>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- ======================================================== -->
   <!-- WINDOW 2: FILE EXPLORER                                  -->
   <!-- ======================================================== -->
   <div class="win minimized" id="ex-win" style="top:70px;left:180px;width:780px;height:500px">
@@ -864,7 +1717,7 @@
     <div class="resize-handle resize-sw" data-win="ex-win" data-dir="sw"></div>
     <div class="resize-handle resize-se" data-win="ex-win" data-dir="se"></div>
 
-    <div class="titlebar" data-win="ex-win">
+    <div class="titlebar" data-win="ex-win" style="--win-accent:#fbbf24">
       <div class="titlebar-left">
         <i data-lucide="folder" style="width:14px;height:14px;color:#fbbf24"></i>
         <span id="ex-title">File Explorer</span>
@@ -889,8 +1742,13 @@
         <div class="ex-sideitem active" id="side-root" onclick="openExplorer('root')">
           <i data-lucide="monitor" style="width:15px;height:15px;color:#3b82f6"></i> This PC
         </div>
+        <div class="ex-sideitem" id="side-networking" onclick="openExplorer('networking')">
+          <i data-lucide="network" style="width:15px;height:15px;color:#38bdf8"></i> Virtual Networking Lab
+        </div>
+        <div class="ex-sideitem" id="side-robot" onclick="openExplorer('robot')">
+          <i data-lucide="bot" style="width:15px;height:15px;color:#a855f7"></i> Breadboard Robot
+        </div>
         <div class="ex-sideitem" id="side-photos" onclick="openExplorer('photos')">
-          <i data-lucide="images" style="width:15px;height:15px;color:#ec4899"></i> Photos
           <i data-lucide="images" style="width:15px;height:15px;color:#ec4899"></i> Peace Corps Photos
         </div>
       </div>
@@ -912,10 +1770,10 @@
     <div class="resize-handle resize-sw" data-win="photos-win" data-dir="sw"></div>
     <div class="resize-handle resize-se" data-win="photos-win" data-dir="se"></div>
 
-    <div class="titlebar" data-win="photos-win">
+    <div class="titlebar" data-win="photos-win" style="--win-accent:#ec4899">
       <div class="titlebar-left">
         <i data-lucide="images" style="width:14px;height:14px;color:#ec4899"></i>
-        <span id="photos-title">Photos</span>
+        <span id="photos-title">Peace Corps Photos</span>
       </div>
       <div class="wbtns">
         <div class="wbtn" onclick="minimize('photos-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
@@ -924,17 +1782,62 @@
       </div>
     </div>
 
-    <div class="photos-app-body">
-      <div class="photos-app-toolbar">
-        <span id="photos-filename">66fb4db8-091d-4026-9307-313f206a1484.JPG</span>
-        <span id="photos-counter" style="color: var(--muted); font-weight: 500;">1 / 14</span>
+    <div class="photos-app-body" style="position:relative">
+      <div class="photos-app-toolbar" style="display:flex;align-items:center;justify-content:space-between;padding:8px 12px;background:#141722;border-bottom:1px solid var(--border);gap:8px">
+        <div style="display:flex;align-items:center;gap:10px;overflow:hidden">
+          <span id="photos-filename" style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:0.75rem">18353ad7-84fc-4117-a71d-8ee28fab49d6 (1).JPG</span>
+          <button class="vm-tab-btn" id="btn-toggle-photo-readme" onclick="togglePhotoReadme()" style="font-size:0.72rem;padding:3px 8px;border-color:rgba(236,72,153,0.4);color:#f472b6;white-space:nowrap">
+            <i data-lucide="info" style="width:12px;height:12px"></i> Service Overview (README)
+          </button>
+        </div>
+        <span id="photos-counter" style="color: var(--muted); font-weight: 500;font-size:0.75rem;white-space:nowrap">1 / 22</span>
+      </div>
+
+      <!-- Peace Corps Service Overview Overlay -->
+      <div id="photos-readme-overlay" style="display:none;position:absolute;top:39px;left:0;right:0;bottom:0;background:rgba(9,13,22,0.96);backdrop-filter:blur(8px);z-index:20;padding:20px;overflow-y:auto">
+        <div style="max-width:620px;margin:0 auto;background:#0d1322;border:1px solid rgba(236,72,153,0.35);border-radius:8px;padding:18px;box-shadow:0 12px 36px rgba(0,0,0,0.7)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:10px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <i data-lucide="award" style="width:18px;height:18px;color:#ec4899"></i>
+              <h3 style="margin:0;font-size:0.95rem;color:#f8fafc">Jacob Williams — Peace Corps Volunteer, Thailand</h3>
+            </div>
+            <button class="vm-tab-btn" onclick="togglePhotoReadme(false)" style="padding:2px 8px;font-size:0.73rem">✕ Close</button>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:12px;font-size:0.78rem;color:#cbd5e1;line-height:1.6">
+            <div style="display:flex;gap:12px;background:rgba(255,255,255,0.04);padding:8px 12px;border-radius:6px;border:1px solid rgba(255,255,255,0.08);flex-wrap:wrap">
+              <div><strong>Role:</strong> Youth Mentor &amp; English Teacher</div>
+              <div><strong>Location:</strong> Rural community, Southern Thailand</div>
+              <div><strong>Duration:</strong> ~6 months</div>
+            </div>
+
+            <div>
+              <h4 style="color:#f472b6;margin:0 0 4px 0;font-size:0.83rem">Key Responsibilities</h4>
+              <ul style="margin:0;padding-left:18px;color:#94a3b8">
+                <li><strong>Classroom Teaching:</strong> Taught basic English to public school students (~3 hours/day), designing and delivering original 50-minute lesson plans.</li>
+                <li><strong>Civic Collaboration:</strong> Collaborated with local government officers on actionable ways to provide resources and assistance to rural youth.</li>
+                <li><strong>Camp Development:</strong> Designed youth camps focused on improving self-sufficiency, sportsmanship, and self-confidence.</li>
+                <li><strong>Youth Soccer Coaching:</strong> Coached youth soccer, teaching shooting/passing drills, and mentoring the team to victory in a local tournament.</li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 style="color:#f472b6;margin:0 0 4px 0;font-size:0.83rem">Skills Gained</h4>
+              <ul style="margin:0;padding-left:18px;color:#94a3b8">
+                <li>Public speaking and classroom presentation</li>
+                <li>Cross-cultural communication and adaptability</li>
+                <li>Rapid language acquisition and cultural immersion</li>
+                <li>Lesson planning, mentorship, and youth leadership</li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="photos-app-stage">
         <div class="photos-nav-arrow hidden" id="photos-btn-prev" onclick="navPhoto(-1)">
           <i data-lucide="chevron-left" style="width:22px;height:22px"></i>
         </div>
-        <img id="photos-main-img" src="media/peace corps photos/66fb4db8-091d-4026-9307-313f206a1484.JPG" alt="Peace Corps Photo">
+        <img id="photos-main-img" src="media/peace corps photos/18353ad7-84fc-4117-a71d-8ee28fab49d6 (1).JPG" alt="Peace Corps Photo">
         <div class="photos-nav-arrow" id="photos-btn-next" onclick="navPhoto(1)">
           <i data-lucide="chevron-right" style="width:22px;height:22px"></i>
         </div>
@@ -956,7 +1859,7 @@
     <div class="resize-handle resize-sw" data-win="bin-win" data-dir="sw"></div>
     <div class="resize-handle resize-se" data-win="bin-win" data-dir="se"></div>
 
-    <div class="titlebar" data-win="bin-win">
+    <div class="titlebar" data-win="bin-win" style="--win-accent:#94a3b8">
       <div class="titlebar-left">
         <i data-lucide="trash-2" style="width:14px;height:14px;color:#94a3b8"></i>
         <span>Recycle Bin</span>
@@ -985,34 +1888,405 @@
     </div>
   </div>
 
+  <!-- ======================================================== -->
+  <!-- WINDOW 5: PDF RESUME PREVIEWER                           -->
+  <!-- ======================================================== -->
+  <div class="win minimized" id="pdf-win" style="top:50px;left:240px;width:820px;height:580px">
+    <!-- 8 Resize Handles -->
+    <div class="resize-handle resize-n"  data-win="pdf-win" data-dir="n"></div>
+    <div class="resize-handle resize-s"  data-win="pdf-win" data-dir="s"></div>
+    <div class="resize-handle resize-w"  data-win="pdf-win" data-dir="w"></div>
+    <div class="resize-handle resize-e"  data-win="pdf-win" data-dir="e"></div>
+    <div class="resize-handle resize-nw" data-win="pdf-win" data-dir="nw"></div>
+    <div class="resize-handle resize-ne" data-win="pdf-win" data-dir="ne"></div>
+    <div class="resize-handle resize-sw" data-win="pdf-win" data-dir="sw"></div>
+    <div class="resize-handle resize-se" data-win="pdf-win" data-dir="se"></div>
+
+    <div class="titlebar" data-win="pdf-win" style="--win-accent:#ef4444">
+      <div class="titlebar-left">
+        <i data-lucide="file-text" style="width:14px;height:14px;color:#ef4444"></i>
+        <span>Jacob_Williams_Resume.pdf — PDF Reader</span>
+      </div>
+      <div class="wbtns">
+        <div class="wbtn" onclick="minimize('pdf-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
+        <div class="wbtn" onclick="toggleMax('pdf-win')"><i data-lucide="square" style="width:10px;height:10px"></i></div>
+        <div class="wbtn close" onclick="close_('pdf-win')"><i data-lucide="x" style="width:12px;height:12px"></i></div>
+      </div>
+    </div>
+
+    <div class="pdf-body" style="flex:1;background:#525659;display:flex;overflow:hidden;position:relative">
+      <iframe id="pdf-frame" src="media/resumePDF/Jacob_Williams_Resume.pdf" style="width:100%;height:100%;border:none;"></iframe>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- WINDOW 6: INTERNET STACK SIMULATOR (NETWORKING)           -->
+  <!-- ======================================================== -->
+  <div class="win minimized" id="vm-win" style="top:25px;left:calc(50% - 510px);width:1020px;height:630px">
+    <!-- 8 Resize Handles -->
+    <div class="resize-handle resize-n"  data-win="vm-win" data-dir="n"></div>
+    <div class="resize-handle resize-s"  data-win="vm-win" data-dir="s"></div>
+    <div class="resize-handle resize-w"  data-win="vm-win" data-dir="w"></div>
+    <div class="resize-handle resize-e"  data-win="vm-win" data-dir="e"></div>
+    <div class="resize-handle resize-nw" data-win="vm-win" data-dir="nw"></div>
+    <div class="resize-handle resize-ne" data-win="vm-win" data-dir="ne"></div>
+    <div class="resize-handle resize-sw" data-win="vm-win" data-dir="sw"></div>
+    <div class="resize-handle resize-se" data-win="vm-win" data-dir="se"></div>
+
+    <div class="titlebar" data-win="vm-win" style="--win-accent:#38bdf8">
+      <div class="titlebar-left">
+        <i data-lucide="network" style="width:14px;height:14px;color:#38bdf8"></i>
+        <span>Virtual Networking Lab — Python L1–L5 TCP/IP Stack (BYU CS 460)</span>
+      </div>
+      <div class="wbtns">
+        <div class="wbtn" onclick="minimize('vm-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
+        <div class="wbtn" onclick="toggleMax('vm-win')"><i data-lucide="square" style="width:10px;height:10px"></i></div>
+        <div class="wbtn close" onclick="close_('vm-win')"><i data-lucide="x" style="width:12px;height:12px"></i></div>
+      </div>
+    </div>
+
+
+    <!-- Scenario Action Bar -->
+    <div class="vm-scenario-bar" style="display:flex;align-items:center;gap:6px;padding:7px 12px;background:#111726;border-bottom:1px solid var(--border);flex-wrap:wrap">
+      <button class="vm-tab-btn" id="btn-scen1" onclick="runScenario(1)" title="Scenario 1: MAC Learning & Subnet Broadcast Flooding (Layer 2)">
+        <i data-lucide="play" style="width:12px;height:12px"></i> Scen 1: L2 Flooding
+      </button>
+      <button class="vm-tab-btn" id="btn-scen2" onclick="runScenario(2)" title="Scenario 2: CIDR Longest-Prefix-Match Routing across 4 router hops (Layer 3)">
+        <i data-lucide="play" style="width:12px;height:12px"></i> Scen 2: L3 Routing
+      </button>
+      <button class="vm-tab-btn" id="btn-scen3" onclick="runScenario(3)" title="Scenario 3: Distance-Vector Bellman-Ford Route Convergence (Layer 3 DV)">
+        <i data-lucide="play" style="width:12px;height:12px"></i> Scen 3: DV Bellman-Ford
+      </button>
+      <button class="vm-tab-btn" id="btn-scen4" onclick="runScenario(4)" title="Scenario 4: TCP 3-Way Handshake & Sliding Window Streaming (Layer 4)">
+        <i data-lucide="play" style="width:12px;height:12px"></i> Scen 4: TCP Handshake
+      </button>
+      <button class="vm-tab-btn primary" id="btn-scen5" onclick="runScenario(5)" title="Scenario 5: End-to-End Full-Stack Internet Simulation (All Layers)">
+        <i data-lucide="play" style="width:12px;height:12px"></i> Scen 5: Full Stack ⭐
+      </button>
+
+      <span style="display:inline-block;width:1px;height:20px;background:rgba(255,255,255,0.15);margin:0 4px"></span>
+
+      <button class="vm-tab-btn" style="background:rgba(34,197,94,0.2);color:#4ade80;border-color:rgba(34,197,94,0.45);font-weight:700" onclick="runAllLabUnitTests()" title="Execute Automated Unit Test Suite (pytest) — runs all 13 component tests">
+        <i data-lucide="check-circle-2" style="width:12px;height:12px"></i> 🧪 Run All Tests (pytest)
+      </button>
+      <button class="vm-tab-btn danger" onclick="stopScenario()" title="Stop animation and reset terminal output">
+        <i data-lucide="square" style="width:11px;height:11px"></i> Stop / Reset
+      </button>
+
+      <div style="margin-left:auto;display:flex;gap:5px;align-items:center">
+        <button class="vm-tab-btn active" id="tab-btn-sim" onclick="switchVmTab('sim')">
+          <i data-lucide="network" style="width:12px;height:12px"></i> Topology &amp; Terminal
+        </button>
+        <button class="vm-tab-btn" id="tab-btn-code" onclick="switchVmTab('code')">
+          <i data-lucide="file-code" style="width:12px;height:12px"></i> Source Code Viewer
+        </button>
+      </div>
+    </div>
+
+
+    <!-- VM Body Panes -->
+    <div class="vm-body" style="flex:1;display:flex;overflow:hidden;position:relative;background:#090d16">
+      <!-- PANE 1: Simulator & Live Topology/Terminal -->
+      <div class="vm-pane active" id="vm-pane-sim" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+        <!-- Live Explainer Banner -->
+        <div class="scenario-explainer-banner" style="background:#0e1526;padding:8px 14px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:0.75rem">
+          <div style="display:flex;align-items:center;gap:8px;overflow:hidden">
+            <span id="scen-layer-badge" style="background:#0284c7;color:#fff;padding:2px 7px;border-radius:4px;font-weight:700;font-size:0.65rem;white-space:nowrap">SYSTEM IDLE</span>
+            <span id="live-explainer-txt" style="color:#cbd5e1;line-height:1.4">
+              Click any scenario button above (e.g. <strong>Scen 1 to 5</strong>) to simulate packet traces across the network stack.
+            </span>
+          </div>
+          <div style="display:flex;gap:5px;flex-shrink:0">
+            <button class="vm-tab-btn" onclick="openScenarioGuide()" style="background:rgba(56,189,248,0.18);border:1px solid #38bdf8;color:#7dd3fc;font-weight:600;font-size:0.72rem;padding:3px 8px" title="What each scenario does">
+              <i data-lucide="help-circle" style="width:12px;height:12px;color:#38bdf8"></i> What's Happening?
+            </button>
+            <button class="vm-tab-btn" onclick="openCodeViewer('README.md')" style="background:rgba(251,191,36,0.18);border:1px solid #fbbf24;color:#fde047;font-weight:600;font-size:0.72rem;padding:3px 8px" title="Open README.md Architecture Specification">
+              <i data-lucide="book-open" style="width:12px;height:12px;color:#fbbf24"></i> README
+            </button>
+          </div>
+        </div>
+
+        <!-- Interactive Visual Topology Stage -->
+        <div class="vm-top-stage" style="padding:12px 14px;border-bottom:1px solid var(--border);background:#070a12;display:flex;flex-direction:column;gap:6px">
+          <div class="topo-canvas" style="position:relative;background:radial-gradient(ellipse at center, rgba(56,189,248,0.06) 0%, rgba(10,15,26,0.9) 70%);border:1px solid rgba(255,255,255,0.06);border-radius:8px;padding:12px 6px">
+            <div class="topo-link-line"></div>
+            <div class="topo-grid" style="display:flex;justify-content:space-around;align-items:center;position:relative;z-index:2;flex-wrap:wrap;gap:8px">
+              <div class="topo-node" id="node-a" onclick="inspectNode('a')">
+                <div class="topo-node-title"><i data-lucide="laptop" style="width:12px;height:12px;color:#38bdf8"></i> Host A</div>
+                <div class="topo-node-ip">10.0.0.1</div>
+              </div>
+              <div class="topo-node" id="node-s1" onclick="inspectNode('s1')">
+                <div class="topo-node-title"><i data-lucide="layers" style="width:12px;height:12px;color:#a855f7"></i> Switch S1</div>
+                <div class="topo-node-ip">Subnet /24</div>
+              </div>
+              <div class="topo-node" id="node-b" onclick="inspectNode('b')">
+                <div class="topo-node-title"><i data-lucide="laptop" style="width:12px;height:12px;color:#38bdf8"></i> Host B</div>
+                <div class="topo-node-ip">10.0.0.2</div>
+              </div>
+              <div class="topo-node" id="node-r1" onclick="inspectNode('r1')">
+                <div class="topo-node-title"><i data-lucide="router" style="width:12px;height:12px;color:#f59e0b"></i> Router R1</div>
+                <div class="topo-node-ip">10.0.1.1</div>
+              </div>
+              <div class="topo-node" id="node-r2" onclick="inspectNode('r2')">
+                <div class="topo-node-title"><i data-lucide="router" style="width:12px;height:12px;color:#f59e0b"></i> Router R2</div>
+                <div class="topo-node-ip">10.0.2.1</div>
+              </div>
+              <div class="topo-node" id="node-r3" onclick="inspectNode('r3')">
+                <div class="topo-node-title"><i data-lucide="router" style="width:12px;height:12px;color:#f59e0b"></i> Router R3</div>
+                <div class="topo-node-ip">10.0.3.1</div>
+              </div>
+              <div class="topo-node" id="node-r4" onclick="inspectNode('r4')">
+                <div class="topo-node-title"><i data-lucide="router" style="width:12px;height:12px;color:#f59e0b"></i> Router R4</div>
+                <div class="topo-node-ip">10.0.4.1</div>
+              </div>
+              <div class="topo-node" id="node-d" onclick="inspectNode('d')">
+                <div class="topo-node-title"><i data-lucide="server" style="width:12px;height:12px;color:#10b981"></i> Server D</div>
+                <div class="topo-node-ip">10.0.4.2</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal Execution Log Stream -->
+        <div class="vm-term" id="vm-term" style="flex:1;overflow-y:auto;padding:12px;font-family:monospace;font-size:0.75rem;background:#050811;color:#e2e8f0;display:flex;flex-direction:column;gap:3px">
+          <div id="vm-log-stream"></div>
+        </div>
+
+        <!-- Interactive Terminal Prompt Input -->
+        <div class="vm-prompt-row" style="display:flex;align-items:center;padding:6px 12px;background:#090d16;border-top:1px solid var(--border);gap:6px">
+          <span style="color:#38bdf8;font-family:monospace;font-size:0.75rem">jacob@network-sim:~$</span>
+          <input type="text" id="vm-cmd-inp" style="flex:1;background:transparent;border:none;color:#f8fafc;font-family:monospace;font-size:0.75rem;outline:none" placeholder="Type a command (e.g. pytest, scenario 5, ls, cat mysocket.py, clear)..." autocomplete="off">
+        </div>
+      </div>
+
+      <!-- PANE 2: Complete Source Code Viewer -->
+      <div class="vm-pane" id="vm-pane-code" style="flex:1;display:none;flex-direction:column;overflow:hidden">
+        <div class="code-viewer-container" style="flex:1;display:flex;flex-direction:column;overflow:hidden">
+          <div class="code-tabs" id="code-tabs-bar" style="display:flex;gap:4px;padding:8px 12px;background:#111726;border-bottom:1px solid var(--border);overflow-x:auto;flex-shrink:0">
+            <div class="code-tab" style="background:rgba(251,191,36,0.18);border:1px solid rgba(251,191,36,0.45);color:#fbbf24;font-weight:700" onclick="loadCodeFile('README.md', this)">
+              <i data-lucide="book-open" style="width:12px;height:12px;color:#fbbf24"></i> 📖 README.md
+            </div>
+            <div class="code-tab active" onclick="loadCodeFile('mysocket.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> mysocket.py</div>
+            <div class="code-tab" onclick="loadCodeFile('dvrouter.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> dvrouter.py</div>
+            <div class="code-tab" onclick="loadCodeFile('forwarding_table.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> forwarding_table.py</div>
+            <div class="code-tab" onclick="loadCodeFile('switch.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> switch.py</div>
+            <div class="code-tab" onclick="loadCodeFile('buffer.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> buffer.py</div>
+            <div class="code-tab" onclick="loadCodeFile('headers.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> headers.py</div>
+            <div class="code-tab" onclick="loadCodeFile('host.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> host.py</div>
+            <div class="code-tab" onclick="loadCodeFile('scenario5.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> scenario5.py</div>
+            <div class="code-tab" onclick="loadCodeFile('echoserver.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> echoserver.py</div>
+            <div class="code-tab" onclick="loadCodeFile('prefix.py', this)"><i data-lucide="file-code" style="width:12px;height:12px"></i> prefix.py</div>
+          </div>
+          <pre class="code-content" id="code-file-display"></pre>
+        </div>
+      </div>
+
+      <!-- Scenario Guide Modal Overlay -->
+      <div id="scen-guide-overlay" style="display:none;position:absolute;inset:0;background:rgba(5,8,16,0.92);backdrop-filter:blur(8px);z-index:250;flex-direction:column;align-items:center;justify-content:center;padding:16px" onclick="if(event.target===this)closeScenarioGuide()">
+        <div style="background:#0e1526;border:1px solid rgba(56,189,248,0.4);border-radius:10px;box-shadow:0 24px 64px rgba(0,0,0,0.85);max-width:860px;width:95%;max-height:90%;display:flex;flex-direction:column;overflow:hidden">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:12px 18px;background:#151c2d;border-bottom:1px solid var(--border)">
+            <div style="display:flex;align-items:center;gap:8px;font-size:0.88rem;font-weight:700;color:#38bdf8">
+              <i data-lucide="help-circle" style="width:16px;height:16px"></i> Interactive Simulation Scenarios — What Each Scenario Does
+            </div>
+            <div class="wbtn close" onclick="closeScenarioGuide()" style="cursor:pointer;padding:4px 8px;border-radius:4px">
+              <i data-lucide="x" style="width:14px;height:14px"></i>
+            </div>
+          </div>
+          <div style="flex:1;overflow-y:auto;padding:18px;display:flex;flex-direction:column;gap:12px;background:#090d16">
+            
+            <div style="background:#111726;border:1px solid rgba(168,85,247,0.3);border-radius:8px;padding:12px 14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <strong style="color:#c084fc;font-size:0.84rem">Scenario 1: Subnet Broadcasts &amp; Layer-2 Flooding</strong>
+                <span style="font-size:0.68rem;background:rgba(168,85,247,0.2);color:#c084fc;padding:2px 8px;border-radius:4px;font-weight:600">Layer 2 (Data Link)</span>
+              </div>
+              <p style="font-size:0.75rem;color:#cbd5e1;line-height:1.5;margin:0 0 6px 0">
+                <strong>What is happening:</strong> Host A transmits an ICMP broadcast frame to <code>10.0.0.255</code> (MAC <code>FF:FF:FF:FF:FF:FF</code>). Custom <code>switch.py</code> learns the source MAC address and floods the raw Ethernet frame out to all connected ports (Host B and Router R1) without dropped packets.
+              </p>
+              <div style="font-size:0.7rem;color:#94a3b8"><strong>Component Tested:</strong> <code>switch.py</code> (Layer 2 Learning Switch)</div>
+            </div>
+
+            <div style="background:#111726;border:1px solid rgba(245,158,11,0.3);border-radius:8px;padding:12px 14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <strong style="color:#fbbf24;font-size:0.84rem">Scenario 2: Static Multi-Hop Forwarding</strong>
+                <span style="font-size:0.68rem;background:rgba(245,158,11,0.2);color:#fcd34d;padding:2px 8px;border-radius:4px;font-weight:600">Layer 3 (Network Routing)</span>
+              </div>
+              <p style="font-size:0.75rem;color:#cbd5e1;line-height:1.5;margin:0 0 6px 0">
+                <strong>What is happening:</strong> Host A pings Server D across 4 router hops (<code>R1 → R2 → R3 → R4</code>). Each router uses <code>forwarding_table.py</code> with bitwise CIDR Longest Prefix Matching (LPM) to look up next-hop interfaces and decrement TTL.
+              </p>
+              <div style="font-size:0.7rem;color:#94a3b8"><strong>Component Tested:</strong> <code>forwarding_table.py</code> &amp; <code>prefix.py</code> (CIDR LPM Table)</div>
+            </div>
+
+            <div style="background:#111726;border:1px solid rgba(56,189,248,0.3);border-radius:8px;padding:12px 14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <strong style="color:#38bdf8;font-size:0.84rem">Scenario 3: Distance-Vector (Bellman-Ford) Routing</strong>
+                <span style="font-size:0.68rem;background:rgba(56,189,248,0.2);color:#7dd3fc;padding:2px 8px;border-radius:4px;font-weight:600">Layer 3 (Dynamic Protocols)</span>
+              </div>
+              <p style="font-size:0.75rem;color:#cbd5e1;line-height:1.5;margin:0 0 6px 0">
+                <strong>What is happening:</strong> Routers R1–R4 initialize without prior routing knowledge. They periodically exchange distance vector packets over UDP sockets using the distributed Bellman-Ford algorithm until cost matrices fully converge on optimal paths.
+              </p>
+              <div style="font-size:0.7rem;color:#94a3b8"><strong>Component Tested:</strong> <code>dvrouter.py</code> (Distributed Bellman-Ford Engine)</div>
+            </div>
+
+            <div style="background:#111726;border:1px solid rgba(34,197,94,0.3);border-radius:8px;padding:12px 14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <strong style="color:#4ade80;font-size:0.84rem">Scenario 4: Multi-Hop TCP 3-Way Handshake &amp; Streaming</strong>
+                <span style="font-size:0.68rem;background:rgba(34,197,94,0.2);color:#86efac;padding:2px 8px;border-radius:4px;font-weight:600">Layer 4 (Reliable Transport)</span>
+              </div>
+              <p style="font-size:0.75rem;color:#cbd5e1;line-height:1.5;margin:0 0 6px 0">
+                <strong>What is happening:</strong> Server D starts <code>EchoServerTCP</code> in <code>LISTEN</code> state. Host A and Host B establish concurrent TCP sessions via RFC 793 three-way handshakes (<code>SYN → SYN-ACK → ACK</code>), transferring byte streams with sliding window buffers.
+              </p>
+              <div style="font-size:0.7rem;color:#94a3b8"><strong>Component Tested:</strong> <code>mysocket.py</code> &amp; <code>buffer.py</code> (TCP State Machine &amp; Buffers)</div>
+            </div>
+
+            <div style="background:#111726;border:1px solid rgba(236,72,153,0.3);border-radius:8px;padding:12px 14px">
+              <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+                <strong style="color:#f472b6;font-size:0.84rem">Scenario 5: Full-Stack Multi-Hop Internet Simulation</strong>
+                <span style="font-size:0.68rem;background:rgba(236,72,153,0.2);color:#f472b6;padding:2px 8px;border-radius:4px;font-weight:600">Layers 1–5 (End-to-End Suite)</span>
+              </div>
+              <p style="font-size:0.75rem;color:#cbd5e1;line-height:1.5;margin:0 0 6px 0">
+                <strong>What is happening:</strong> The culmination test. Unifies custom <code>switch.py</code> (L2), <code>dvrouter.py</code> (L3), and <code>mysocket.py</code> (L4) executing simultaneously across the entire multi-hop virtual topology with 100% data integrity.
+              </p>
+              <div style="font-size:0.7rem;color:#94a3b8"><strong>Component Tested:</strong> Full Custom Internet Stack (All Modules)</div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ======================================================== -->
+  <!-- WINDOW 7: BREADBOARD ROBOT (EMBEDDED C++ & HARDWARE)     -->
+  <!-- ======================================================== -->
+  <div class="win minimized" id="robot-win" style="top:45px;left:calc(50% - 440px);width:880px;height:600px">
+    <!-- 8 Resize Handles -->
+    <div class="resize-handle resize-n"  data-win="robot-win" data-dir="n"></div>
+    <div class="resize-handle resize-s"  data-win="robot-win" data-dir="s"></div>
+    <div class="resize-handle resize-w"  data-win="robot-win" data-dir="w"></div>
+    <div class="resize-handle resize-e"  data-win="robot-win" data-dir="e"></div>
+    <div class="resize-handle resize-nw" data-win="robot-win" data-dir="nw"></div>
+    <div class="resize-handle resize-ne" data-win="robot-win" data-dir="ne"></div>
+    <div class="resize-handle resize-sw" data-win="robot-win" data-dir="sw"></div>
+    <div class="resize-handle resize-se" data-win="robot-win" data-dir="se"></div>
+
+    <div class="titlebar" data-win="robot-win" style="--win-accent:#a855f7">
+      <div class="titlebar-left">
+        <i data-lucide="bot" style="width:14px;height:14px;color:#a855f7"></i>
+        <span>Breadboard Robot — Embedded C++ &amp; Hardware Demonstration (Arduino)</span>
+      </div>
+      <div class="wbtns">
+        <div class="wbtn" onclick="minimize('robot-win')"><i data-lucide="minus" style="width:12px;height:12px"></i></div>
+        <div class="wbtn" onclick="toggleMax('robot-win')"><i data-lucide="square" style="width:10px;height:10px"></i></div>
+        <div class="wbtn close" onclick="close_('robot-win')"><i data-lucide="x" style="width:12px;height:12px"></i></div>
+      </div>
+    </div>
+
+    <!-- Robot Window Container -->
+    <div class="robot-container">
+      <!-- Toolbar Tabs -->
+      <div class="robot-tabs">
+        <button class="vm-tab-btn active" id="tab-btn-r-code" onclick="switchRobotTab('code')">
+          <i data-lucide="file-code" style="width:12px;height:12px"></i> 💻 Embedded C++ Firmware &amp; Architecture
+        </button>
+        <button class="vm-tab-btn" id="tab-btn-r-video" onclick="switchRobotTab('video')">
+          <i data-lucide="video" style="width:12px;height:12px"></i> 🎬 Demonstration Video
+        </button>
+      </div>
+
+      <!-- PANE 1: Embedded C++ Code Viewer (DEFAULT) -->
+      <div class="robot-pane active" id="robot-pane-code">
+        <div class="code-viewer-container">
+          <div class="code-tabs" id="robot-code-tabs-bar">
+            <div class="code-tab active" onclick="loadRobotCodeFile('robot_controller.ino', this)">
+              <i data-lucide="file-code" style="width:12px;height:12px"></i> robot_controller.ino
+            </div>
+            <div class="code-tab" onclick="loadRobotCodeFile('pin_config.h', this)">
+              <i data-lucide="file-code" style="width:12px;height:12px"></i> pin_config.h
+            </div>
+            <div class="code-tab" onclick="loadRobotCodeFile('README.md', this)">
+              <i data-lucide="book-open" style="width:12px;height:12px"></i> README.md
+            </div>
+          </div>
+          <pre class="code-content" id="robot-code-display"></pre>
+        </div>
+      </div>
+
+      <!-- PANE 2: Video & Project Overview -->
+      <div class="robot-pane" id="robot-pane-video" style="padding:16px;overflow-y:auto;gap:14px">
+        <div style="display:flex;justify-content:center;background:#000;border-radius:8px;padding:8px;border:1px solid rgba(168,85,247,0.3);box-shadow:0 8px 24px rgba(0,0,0,0.6)">
+          <video id="robot-video-player" controls autoplay muted loop playsinline style="max-height:360px;max-width:100%;border-radius:6px;background:#000">
+            <source src="media/Breadboard-Robot/robotProject.MOV" type="video/mp4">
+            <source src="media/robotProject.MOV" type="video/quicktime">
+            <source src="media/robotProject.MOV" type="video/mp4">
+            Your browser does not support the video tag.
+          </video>
+        </div>
+
+        <div style="background:#0e1526;border:1px solid rgba(168,85,247,0.35);border-radius:8px;padding:14px">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:8px;flex-wrap:wrap">
+            <div style="display:flex;align-items:center;gap:8px">
+              <i data-lucide="award" style="width:20px;height:20px;color:#c084fc"></i>
+              <h3 style="margin:0;font-size:0.96rem;color:#f8fafc">Resume Project: Breadboard Robot (Embedded Systems &amp; Hardware)</h3>
+            </div>
+            <span style="font-size:0.7rem;background:rgba(168,85,247,0.2);color:#c084fc;padding:2px 8px;border-radius:4px;font-weight:600">September 2025 – August 2025</span>
+          </div>
+          <div style="font-size:0.77rem;color:#94a3b8;line-height:1.6">
+            • <strong>Embedded C++ Firmware:</strong> Programmed embedded systems software in C++ on Arduino hardware, reading from multiple pin configurations (IR line/edge detection, HC-SR04 ultrasonic distance) and driving dual DC motors via L298N H-Bridge PWM.<br>
+            • <strong>Inductors &amp; Capacitors Circuit Integration:</strong> Incorporated a <strong>100µF electrolytic buffer capacitor</strong> across the 5V power rail to eliminate logic brownout resets caused by motor startup inrush current, <strong>0.1µF ceramic decoupling capacitors</strong> on motor terminals for RF brush sparking noise suppression, and <strong>1N4007 flyback diodes</strong> to clamp back-EMF inductive spikes.<br>
+            • <strong>Perception-Planning-Action Architecture:</strong> Multi-phase finite state machine structure processing pull-down button inputs, obstacle detection thresholds, and real-time motor actuation.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div><!-- /desktop -->
+
+<!-- Desktop Right-Click Context Menu -->
+<div id="ctx-menu">
+  <div class="ctx-item muted" style="font-weight:600;color:#64748b;cursor:default"><i data-lucide="layout-grid" style="width:14px;height:14px"></i> View</div>
+  <div class="ctx-item muted"><i data-lucide="arrow-up-down" style="width:14px;height:14px"></i> Sort by</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="closeCtxMenu();show('notepad-win')"><i data-lucide="file-text" style="width:14px;height:14px;color:#38bdf8"></i> Open Welcome.txt</div>
+  <div class="ctx-item" onclick="closeCtxMenu();toggle('ps-win')"><i data-lucide="terminal-square" style="width:14px;height:14px;color:#60a5fa"></i> Open Terminal</div>
+  <div class="ctx-item" onclick="closeCtxMenu();openExplorer('root');show('ex-win')"><i data-lucide="folder" style="width:14px;height:14px;color:#fbbf24"></i> Open File Explorer</div>
+  <div class="ctx-sep"></div>
+  <div class="ctx-item" onclick="closeCtxMenu();toggleFlyout('qs-flyout')"><i data-lucide="settings" style="width:14px;height:14px;color:#94a3b8"></i> Display Settings</div>
+  <div class="ctx-item muted"><i data-lucide="palette" style="width:14px;height:14px"></i> Personalize</div>
+</div>
 
 <!-- Windows Taskbar -->
 <footer id="taskbar">
-  <div></div>
+  <div style="display:flex;align-items:center;gap:6px;padding-left:4px">
+    <div style="width:28px;height:28px;border-radius:50%;background:linear-gradient(135deg,#0078d4,#6366f1);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:0.72rem;color:#fff;cursor:pointer" onclick="toggleFlyout('start-menu')" title="Jacob Williams · Software Engineer">JW</div>
+    <div class="tb-weather-widget" onclick="toggleFlyout('weather-flyout')" title="Weather: 75°F Sunny · Santa Clara, California 95054">
+      <i data-lucide="sun" style="width:18px;height:18px;color:#fbbf24"></i>
+      <div style="display:flex;flex-direction:column;line-height:1.15">
+        <span style="font-size:0.75rem;font-weight:600;color:#f8fafc">75°F</span>
+        <span style="font-size:0.64rem;color:#94a3b8">Sunny</span>
+      </div>
+    </div>
+  </div>
 
   <div class="tb-center">
-    <div class="tb-btn" id="tb-start" style="color:#00a4ef" onclick="toggleFlyout('start-menu')" title="Start">
+    <div class="tb-btn" id="tb-start" style="color:#00a4ef" onclick="toggleFlyout('start-menu')" title="Start — Open App Launcher">
       <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
         <path d="M0 3.449L9.75 2.1v9.451H0m10.949-9.602L24 0v11.4H10.949M0 12.6h9.75v9.451L0 20.699M10.949 12.6H24V24l-12.9-1.801"/>
       </svg>
     </div>
-    <div class="tb-btn" id="tb-ps" onclick="toggle('ps-win')" title="PowerShell">
-      <i data-lucide="terminal-square" style="width:22px;height:22px;color:#60a5fa"></i>
+    <div class="tb-btn" id="tb-ps" onclick="toggle('ps-win')" title="PowerShell — Python 3 REPL">
+      <i data-lucide="terminal-square" style="width:20px;height:20px;color:#60a5fa"></i>
     </div>
-    <div class="tb-btn" id="tb-ex" onclick="toggle('ex-win')" title="File Explorer">
-      <i data-lucide="folder" style="width:22px;height:22px;color:#fbbf24"></i>
-    </div>
-    <div class="tb-btn" id="tb-photos" onclick="toggle('photos-win')" title="Photos App">
-      <i data-lucide="images" style="width:22px;height:22px;color:#ec4899"></i>
+    <div class="tb-btn" id="tb-ex" onclick="toggle('ex-win')" title="File Explorer — Browse projects">
+      <i data-lucide="folder" style="width:20px;height:20px;color:#fbbf24"></i>
     </div>
     <div class="tb-btn" id="tb-bin" onclick="toggle('bin-win')" title="Recycle Bin">
-      <i data-lucide="trash-2" style="width:22px;height:22px;color:#94a3b8"></i>
+      <i data-lucide="trash-2" style="width:20px;height:20px;color:#94a3b8"></i>
     </div>
   </div>
 
   <div class="tb-tray">
-    <div class="tb-tray-btn" onclick="toggleFlyout('qs-flyout')" title="Quick Settings">
+    <div class="tb-tray-btn" onclick="toggleFlyout('qs-flyout')" title="Quick Settings — Wi-Fi, Volume, Brightness">
       <i data-lucide="wifi" id="tray-wifi-icon" style="width:15px;height:15px"></i>
       <i data-lucide="volume-2" id="tray-volume-icon" style="width:15px;height:15px"></i>
       <i data-lucide="battery" style="width:16px;height:16px"></i>
@@ -1030,16 +2304,12 @@
     <i data-lucide="search" class="sm-search-ico" style="width:15px;height:15px"></i>
     <input class="sm-input" id="sm-inp" placeholder="Search apps, files, settings…" autocomplete="off">
   </div>
-  <div class="sm-label">Pinned</div>
   <div class="sm-grid" id="sm-grid">
+    <div class="sm-card" onclick="openExplorer('root');show('ex-win');closeStart()">
+      <i data-lucide="folder" style="width:28px;height:28px;color:#fbbf24"></i> File Explorer
+    </div>
     <div class="sm-card" onclick="show('ps-win');closeStart()">
       <i data-lucide="terminal-square" style="width:28px;height:28px;color:#60a5fa"></i> PowerShell
-    </div>
-    <div class="sm-card" onclick="openExplorer('root');show('ex-win');closeStart()">
-      <i data-lucide="folder" style="width:28px;height:28px;color:#fbbf24"></i> Explorer
-    </div>
-    <div class="sm-card" onclick="openPhotosApp(0);closeStart()">
-      <i data-lucide="images" style="width:28px;height:28px;color:#ec4899"></i> Photos
     </div>
     <div class="sm-card" onclick="openExplorer('root');show('ex-win');closeStart()">
       <i data-lucide="monitor" style="width:28px;height:28px;color:#3b82f6"></i> This PC
@@ -1049,16 +2319,15 @@
     <div class="sm-profile">
       <div class="avatar">JW</div>
       <div>
-        <div style="font-size:0.84rem;font-weight:600">Jacob Williams</div>
-        <div style="font-size:0.7rem;color:var(--muted)">Administrator</div>
+        <div style="font-size:0.84rem;font-weight:700">Jacob Williams</div>
+        <div style="font-size:0.69rem;color:var(--muted)">Software Engineer · BYU 2025</div>
       </div>
     </div>
     <div style="position:relative">
-      <div class="wbtn" onclick="togglePower(event)"><i data-lucide="power" style="width:18px;height:18px"></i></div>
+      <div class="wbtn" onclick="togglePower(event)" title="Power options"><i data-lucide="power" style="width:18px;height:18px"></i></div>
       <div class="power-popup" id="power-popup">
-        <div class="power-item" onclick="lockScreen()"><i data-lucide="lock" style="width:14px;height:14px"></i> Lock</div>
         <div class="power-item" onclick="restart()"><i data-lucide="refresh-cw" style="width:14px;height:14px"></i> Restart</div>
-        <div class="power-item" onclick="lockScreen()"><i data-lucide="power" style="width:14px;height:14px"></i> Shut Down</div>
+        <div class="power-item" onclick="shutDown()"><i data-lucide="power" style="width:14px;height:14px"></i> Shut Down</div>
       </div>
     </div>
   </div>
@@ -1093,6 +2362,60 @@
   </div>
 </div>
 
+<!-- Weather Flyout -->
+<div class="flyout" id="weather-flyout">
+  <div style="display:flex;justify-content:space-between;align-items:flex-start">
+    <div>
+      <div style="font-size:0.85rem;font-weight:700;color:#f8fafc;display:flex;align-items:center;gap:6px">
+        <i data-lucide="map-pin" style="width:14px;height:14px;color:#38bdf8"></i> Santa Clara, CA 95054
+      </div>
+      <div style="font-size:0.7rem;color:#94a3b8;margin-top:2px">Silicon Valley Weather</div>
+    </div>
+    <div style="background:rgba(251,191,36,0.15);padding:4px 8px;border-radius:6px;display:flex;align-items:center;gap:5px;border:1px solid rgba(251,191,36,0.3)">
+      <i data-lucide="sun" style="width:18px;height:18px;color:#fbbf24"></i>
+      <span style="font-size:1.1rem;font-weight:700;color:#fff">75°</span>
+    </div>
+  </div>
+
+  <div style="background:rgba(255,255,255,0.04);border-radius:8px;padding:10px 12px;display:flex;justify-content:space-between;font-size:0.72rem;color:#cbd5e1">
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+      <span style="color:var(--muted)">Condition</span>
+      <span style="font-weight:600;color:#f1f5f9">Sunny</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+      <span style="color:var(--muted)">Humidity</span>
+      <span style="font-weight:600;color:#f1f5f9">48%</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+      <span style="color:var(--muted)">Wind</span>
+      <span style="font-weight:600;color:#f1f5f9">8 mph NW</span>
+    </div>
+    <div style="display:flex;flex-direction:column;align-items:center;gap:3px">
+      <span style="color:var(--muted)">UV Index</span>
+      <span style="font-weight:600;color:#f1f5f9">6 (High)</span>
+    </div>
+  </div>
+
+  <div style="font-size:0.7rem;color:#94a3b8;font-weight:600;text-transform:uppercase;letter-spacing:0.05em">3-Day Forecast</div>
+  <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:8px;text-align:center">
+      <div style="font-size:0.7rem;color:var(--muted)">Today</div>
+      <i data-lucide="sun" style="width:18px;height:18px;color:#fbbf24;margin:4px auto;display:block"></i>
+      <div style="font-size:0.75rem;font-weight:700;color:#f1f5f9">78° / 58°</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:8px;text-align:center">
+      <div style="font-size:0.7rem;color:var(--muted)">Tomorrow</div>
+      <i data-lucide="sun" style="width:18px;height:18px;color:#fbbf24;margin:4px auto;display:block"></i>
+      <div style="font-size:0.75rem;font-weight:700;color:#f1f5f9">76° / 56°</div>
+    </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:6px;padding:8px;text-align:center">
+      <div style="font-size:0.7rem;color:var(--muted)">Tuesday</div>
+      <i data-lucide="cloud-sun" style="width:18px;height:18px;color:#38bdf8;margin:4px auto;display:block"></i>
+      <div style="font-size:0.75rem;font-weight:700;color:#f1f5f9">77° / 55°</div>
+    </div>
+  </div>
+</div>
+
 <script>
 // ================================================================
 // Initialize Lucide Icons
@@ -1103,17 +2426,25 @@ lucide.createIcons();
 // PEACE CORPS PHOTO ARRAY & REEL NAVIGATION
 // ================================================================
 const PHOTOS = [
+  "18353ad7-84fc-4117-a71d-8ee28fab49d6 (1).JPG",
+  "49286308-31ac-41df-9de4-d4233b3042d6 (1).JPG",
   "66fb4db8-091d-4026-9307-313f206a1484.JPG",
+  "73d0a43c-dcd6-4a1c-b5c0-8a19000fe53c.JPG",
+  "9fde16b2-cfbd-40b6-a81b-bbc86dd1fc70.JPG",
   "c5b0cfa2-2de9-493f-b5ac-ed4cf4c3d019 (1).JPG",
   "IMG_7010.JPG",
   "IMG_7011.JPG",
   "IMG_7127.JPG",
+  "IMG_7168 (1).JPG",
+  "IMG_7293.JPG",
   "IMG_7386.JPG",
   "IMG_7387.JPG",
   "IMG_7621.JPG",
   "IMG_7623 (1).JPG",
   "IMG_7947.JPG",
   "IMG_7961.JPG",
+  "IMG_7962 (1).JPG",
+  "IMG_7964 (1).JPG",
   "IMG_8039.JPG",
   "unnamed (1).jpg",
   "unnamed.jpg"
@@ -1139,7 +2470,7 @@ function openPhotosApp(idx, dir) {
   const titleEl = document.getElementById('photos-title');
   const counterEl = document.getElementById('photos-counter');
   if (fnEl) fnEl.textContent = filename;
-  if (titleEl) titleEl.textContent = `Photos — ${filename}`;
+  if (titleEl) titleEl.textContent = `Peace Corps Photos — ${filename}`;
   if (counterEl) counterEl.textContent = `${idx + 1} / ${PHOTOS.length}`;
   
   // Hard stop navigation boundaries
@@ -1153,6 +2484,41 @@ function openPhotosApp(idx, dir) {
 
 function navPhoto(dir) {
   openPhotosApp(photoIdx + dir, dir);
+}
+
+function togglePhotoReadme(forceShow) {
+  const overlay = document.getElementById('photos-readme-overlay');
+  const btn = document.getElementById('btn-toggle-photo-readme');
+  if (!overlay) return;
+  const isShown = forceShow !== undefined ? forceShow : overlay.style.display !== 'block';
+  overlay.style.display = isShown ? 'block' : 'none';
+  if (btn) {
+    btn.style.background = isShown ? 'rgba(236,72,153,0.25)' : 'transparent';
+    btn.style.borderColor = isShown ? '#f472b6' : 'rgba(236,72,153,0.4)';
+  }
+}
+
+// ================================================================
+// PDF VIEWER (RESUME & PEACE CORPS DESCRIPTION OF SERVICE)
+// ================================================================
+function openPdfDocument(docType) {
+  const frame = document.getElementById('pdf-frame');
+  const titleEl = document.querySelector('#pdf-win .titlebar-left span');
+  const btnResume = document.getElementById('btn-pdf-resume');
+  const btnDos = document.getElementById('btn-pdf-dos');
+
+  if (docType === 'peace-corps' || docType === 'dos') {
+    if (frame) frame.src = encodeURI('media/peace corps photos/Jacob Williams Description of Service.pdf');
+    if (titleEl) titleEl.textContent = 'Jacob Williams Description of Service.pdf — Peace Corps';
+    if (btnResume) btnResume.classList.remove('active');
+    if (btnDos) btnDos.classList.add('active');
+  } else {
+    if (frame) frame.src = 'media/resumePDF/Jacob_Williams_Resume.pdf';
+    if (titleEl) titleEl.textContent = 'Jacob_Williams_Resume.pdf — PDF Reader';
+    if (btnResume) btnResume.classList.add('active');
+    if (btnDos) btnDos.classList.remove('active');
+  }
+  show('pdf-win');
 }
 
 // ================================================================
@@ -1177,41 +2543,105 @@ function openExplorer(view) {
   const title = document.getElementById('ex-title');
   document.getElementById('side-root').classList.toggle('active',   view === 'root');
   document.getElementById('side-photos').classList.toggle('active', view === 'photos');
+  const sideNet = document.getElementById('side-networking');
+  if (sideNet) sideNet.classList.toggle('active', view === 'networking');
+  const sideRobot = document.getElementById('side-robot');
+  if (sideRobot) sideRobot.classList.toggle('active', view === 'robot');
 
   if (view === 'root') {
     addr.textContent = 'This PC';
     title.textContent = 'File Explorer — This PC';
     files.innerHTML = `
-      <div class="ex-item" onclick="openExplorer('photos')">
+      <div class="ex-item" onclick="openExplorer('networking')" ondblclick="openExplorer('networking')">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#0d1d2e">
+          <i data-lucide="network" style="width:42px;height:42px;color:#38bdf8"></i>
+        </div>
+        <div>Computer Networking</div>
+      </div>
+      <div class="ex-item" onclick="openExplorer('robot')" ondblclick="openExplorer('robot')">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#1c1438">
+          <i data-lucide="bot" style="width:42px;height:42px;color:#a855f7"></i>
+        </div>
+        <div>Breadboard Robot</div>
+      </div>
       <div class="ex-item" onclick="openExplorer('photos')" ondblclick="openExplorer('photos')">
         <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#1a1030">
-          <i data-lucide="images" style="width:42px;height:42px;color:#ec4899"></i></div>
-        Photos
-        Peace Corps Photos
+          <i data-lucide="images" style="width:42px;height:42px;color:#ec4899"></i>
+        </div>
+        <div>Peace Corps Photos</div>
+      </div>
+      <div class="ex-item" onclick="show('pdf-win')" ondblclick="show('pdf-win')">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#2a1215">
+          <i data-lucide="file-text" style="width:42px;height:42px;color:#ef4444"></i>
+        </div>
+        <div>Resume.pdf</div>
       </div>`;
+  } else if (view === 'robot') {
+    addr.textContent = 'This PC › Breadboard Robot';
+    title.textContent = 'File Explorer — Breadboard Robot (Embedded C++)';
+    const robotFiles = [
+      { name: 'robotProject.MOV (Video Demo)', icon: 'video', color: '#a855f7', action: "openRobotApp('video')" },
+      { name: 'robot_controller.ino (C++ Firmware)', icon: 'file-code', color: '#38bdf8', action: "openRobotApp('code');loadRobotCodeFile('robot_controller.ino')" },
+      { name: 'pin_config.h (Pin Mapping)', icon: 'file-code', color: '#10b981', action: "openRobotApp('code');loadRobotCodeFile('pin_config.h')" },
+      { name: 'README.md (Circuit & Architecture Spec)', icon: 'book-open', color: '#fbbf24', action: "openRobotApp('code');loadRobotCodeFile('README.md')" }
+    ];
+    files.innerHTML = robotFiles.map(f => `
+      <div class="ex-item" onclick="${f.action}" ondblclick="${f.action}">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#15102a">
+          <i data-lucide="${f.icon}" style="width:40px;height:40px;color:${f.color}"></i>
+        </div>
+        <div style="font-size:0.7rem;overflow:hidden;text-overflow:ellipsis;width:100%;white-space:nowrap" title="${f.name}">${f.name}</div>
+      </div>`).join('');
   } else if (view === 'photos') {
-    addr.textContent = 'This PC › Photos';
-    title.textContent = 'File Explorer — Photos';
     addr.textContent = 'This PC › Peace Corps Photos';
     title.textContent = 'File Explorer — Peace Corps Photos';
+    
+    let html = `
+      <div class="ex-item" onclick="openPhotosApp(0);togglePhotoReadme(true)" ondblclick="openPhotosApp(0);togglePhotoReadme(true)">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#241220">
+          <i data-lucide="book-open" style="width:38px;height:38px;color:#ec4899"></i>
+        </div>
+        <div style="font-size:0.7rem;overflow:hidden;text-overflow:ellipsis;width:100%;white-space:nowrap;color:#f472b6;font-weight:600" title="README.md (Service Overview)">README.md (Overview)</div>
+      </div>`;
+
     if (PHOTOS.length === 0) {
-      files.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">All photos moved to Recycle Bin.</div>`;
+      files.innerHTML = html + `<div style="grid-column: 1/-1; text-align: center; color: var(--muted); padding: 40px 0;">All photos moved to Recycle Bin.</div>`;
     } else {
-      files.innerHTML = PHOTOS.map((f, i) => `
-        <div class="ex-item">
-          <div class="ex-thumb" onclick="openPhotosApp(${i})">
+      files.innerHTML = html + PHOTOS.map((f, i) => `
         <div class="ex-item" onclick="selectExplorerItem(event, ${i})" ondblclick="openPhotosApp(${i})">
           <div class="ex-thumb">
             <img src="${encodeURI('media/peace corps photos/' + f)}" loading="lazy"
                  onerror="this.closest('.ex-item').style.display='none'" alt="${f}">
           </div>
-          <div onclick="openPhotosApp(${i})">${f}</div>
-          <div>${f}</div>
+          <div style="font-size:0.7rem;overflow:hidden;text-overflow:ellipsis;width:100%;white-space:nowrap" title="${f}">${f}</div>
           <div class="ex-item-del" onclick="event.stopPropagation();deletePhoto(${i})" title="Delete to Recycle Bin">
             <i data-lucide="trash-2" style="width:12px;height:12px"></i>
           </div>
         </div>`).join('');
     }
+  } else if (view === 'networking') {
+    addr.textContent = 'This PC › Computer Networking › 13-lab-full-stack-network';
+    title.textContent = 'File Explorer — Computer Virtual Networking Lab';
+    const netFiles = [
+      { name: 'README.md (Architecture Spec)', icon: 'book-open', color: '#fbbf24', action: "openCodeViewer('README.md')" },
+      { name: 'mysocket.py (TCP Stack)', icon: 'file-code', color: '#38bdf8', action: "openCodeViewer('mysocket.py')" },
+      { name: 'dvrouter.py (Bellman-Ford)', icon: 'file-code', color: '#f59e0b', action: "openCodeViewer('dvrouter.py')" },
+      { name: 'forwarding_table.py (CIDR LPM)', icon: 'file-code', color: '#10b981', action: "openCodeViewer('forwarding_table.py')" },
+      { name: 'switch.py (Learning Switch)', icon: 'file-code', color: '#a855f7', action: "openCodeViewer('switch.py')" },
+      { name: 'buffer.py (TCP Buffers)', icon: 'file-code', color: '#6366f1', action: "openCodeViewer('buffer.py')" },
+      { name: 'headers.py (Packet Serialization)', icon: 'file-code', color: '#ec4899', action: "openCodeViewer('headers.py')" },
+      { name: 'host.py (Host Base & ARP)', icon: 'file-code', color: '#38bdf8', action: "openCodeViewer('host.py')" },
+      { name: 'scenario5.py (Simulation Driver)', icon: 'file-code', color: '#22c55e', action: "openCodeViewer('scenario5.py')" },
+      { name: 'echoserver.py (Echo Daemon)', icon: 'file-code', color: '#f59e0b', action: "openCodeViewer('echoserver.py')" },
+      { name: 'prefix.py (Bitwise Prefix)', icon: 'file-code', color: '#a855f7', action: "openCodeViewer('prefix.py')" }
+    ];
+    files.innerHTML = netFiles.map(f => `
+      <div class="ex-item" onclick="${f.action}" ondblclick="${f.action}">
+        <div class="ex-thumb" style="display:flex;align-items:center;justify-content:center;background:#0d1522">
+          <i data-lucide="${f.icon}" style="width:40px;height:40px;color:${f.color}"></i>
+        </div>
+        <div style="font-size:0.7rem;overflow:hidden;text-overflow:ellipsis;width:100%;white-space:nowrap" title="${f.name}">${f.name}</div>
+      </div>`).join('');
   }
   lucide.createIcons();
 }
@@ -1225,7 +2655,11 @@ const tbMap = {
   'ps-win': 'tb-ps',
   'ex-win': 'tb-ex',
   'photos-win': 'tb-photos',
-  'bin-win': 'tb-bin'
+  'bin-win': 'tb-bin',
+  'pdf-win': 'tb-pdf',
+  'vm-win': 'tb-vm',
+  'robot-win': 'tb-robot',
+  'notepad-win': 'tb-notepad'
 };
 
 function focusWin(id) {
@@ -1246,6 +2680,10 @@ function show(id) {
     if (!img || !img.getAttribute('src')) {
       openPhotosApp(photoIdx || 0);
     }
+  } else if (id === 'vm-win') {
+    lucide.createIcons();
+  } else if (id === 'robot-win') {
+    lucide.createIcons();
   }
   w.classList.remove('minimized');
   focusWin(id);
@@ -1384,15 +2822,7 @@ document.querySelectorAll('.resize-handle').forEach(handle => {
 // PHYSICAL KEYBOARD ARROW KEYS & DELETE HOTKEYS
 // ================================================================
 window.addEventListener('keydown', (e) => {
-  // 1. Lock Screen Unlock
-  const lock = document.getElementById('lock');
-  if (lock && !lock.classList.contains('gone')) {
-    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); unlock(); }
-    return;
-  }
-
-  // 2. Delete / Backspace key to send selected desktop icon to Recycle Bin
-  // 2. Delete / Backspace key to send selected File Explorer photo or desktop icon to Recycle Bin
+  // 1. Delete / Backspace key to send selected File Explorer photo or desktop icon to Recycle Bin
   if (e.key === 'Delete' || e.key === 'Backspace') {
     if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
       return;
@@ -1414,7 +2844,7 @@ window.addEventListener('keydown', (e) => {
     }
   }
 
-  // 3. Photos App Window Arrow Keys
+  // 2. Photos App Window Arrow Keys
   const photosWin = document.getElementById('photos-win');
   if (photosWin && !photosWin.classList.contains('minimized') && photosWin.classList.contains('focused')) {
     if (e.key === 'ArrowLeft') {
@@ -1463,7 +2893,20 @@ psInp.addEventListener('keydown', (e) => {
       try {
         let out = '';
         if (t === 'clear' || t === 'cls') { psLog.innerHTML = ''; return; }
-        if (t === 'x') { out = JSON.stringify(pyScope.x); }
+        if (t === 'shutdown' || t === 'shutdown /s' || t === 'poweroff' || t === 'exit') {
+          shutDown();
+          return;
+        } else if (t === 'restart' || t === 'reboot' || t === 'shutdown /r') {
+          restart();
+          return;
+        } else if (t === 'notepad' || t.startsWith('notepad ') || t === 'notepad.exe') {
+          show('notepad-win');
+          focusWin('notepad-win');
+          out = 'Opened Welcome.txt in Notepad.';
+        } else if (t === 'cat welcome.txt' || t === 'type welcome.txt' || t === 'cat Welcome.txt') {
+          out = 'hello welcome to my PC! feel free to poke around.';
+        }
+        else if (t === 'x') { out = JSON.stringify(pyScope.x); }
         else if (/^x\s*=/.test(t)) {
           const parsed = JSON.parse(t.split('=').slice(1).join('=').trim());
           if (Array.isArray(parsed)) { pyScope.x = parsed; }
@@ -1513,11 +2956,10 @@ function tick() {
   const n = new Date();
   const t = n.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
   const d = n.toLocaleDateString([], { month: 'numeric', day: 'numeric', year: 'numeric' });
-  const fd = n.toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
-  document.getElementById('tray-time').textContent = t;
-  document.getElementById('tray-date').textContent = d;
-  document.getElementById('lock-clock').textContent = t;
-  document.getElementById('lock-date').textContent  = fd;
+  const trayTime = document.getElementById('tray-time');
+  const trayDate = document.getElementById('tray-date');
+  if (trayTime) trayTime.textContent = t;
+  if (trayDate) trayDate.textContent = d;
 }
 setInterval(tick, 1000);
 tick();
@@ -1715,11 +3157,17 @@ function deletePhoto(idx) {
   });
 
   if (photoIdx >= PHOTOS.length) photoIdx = Math.max(0, PHOTOS.length - 1);
-  if (PHOTOS.length > 0) {
-    openPhotosApp(photoIdx);
-  } else {
-    close_('photos-win');
+
+  // Only update photos-win if it is ALREADY actively open and not minimized
+  const photosWin = document.getElementById('photos-win');
+  if (photosWin && !photosWin.classList.contains('minimized')) {
+    if (PHOTOS.length > 0) {
+      openPhotosApp(photoIdx);
+    } else {
+      close_('photos-win');
+    }
   }
+
   openExplorer(exView);
   updateBinUI();
 }
@@ -1734,9 +3182,6 @@ function restoreFromBin(idx) {
   } else if (item.type === 'photo') {
     PHOTOS.push(item.filename);
     openExplorer(exView);
-    if (PHOTOS.length === 1) {
-      openPhotosApp(0);
-    }
   }
   updateBinUI();
 }
@@ -1901,15 +3346,20 @@ function togglePower(e) {
 function closeStart() {
   document.getElementById('start-menu').classList.remove('open');
   document.getElementById('power-popup').classList.remove('open');
+  const inp = document.getElementById('sm-inp');
+  if (inp && inp.value) {
+    inp.value = '';
+    renderDefaultStartMenu();
+  }
 }
 
 // Click-off dismissal
 window.addEventListener('pointerdown', (e) => {
   if (!e.target.closest('#start-menu') && !e.target.closest('#tb-start'))
-    document.getElementById('start-menu').classList.remove('open');
+    closeStart();
   if (!e.target.closest('#power-popup') && !e.target.closest('.wbtn[onclick*="togglePower"]'))
     document.getElementById('power-popup').classList.remove('open');
-  if (!e.target.closest('.flyout') && !e.target.closest('.tb-tray-btn'))
+  if (!e.target.closest('.flyout') && !e.target.closest('.tb-tray-btn') && !e.target.closest('.tb-weather-widget'))
     document.querySelectorAll('.flyout').forEach(f => f.classList.remove('open'));
   if (!e.target.closest('.ex-item')) {
     selectedExPhotoIdx = -1;
@@ -1917,71 +3367,1539 @@ window.addEventListener('pointerdown', (e) => {
   }
 }, true);
 
-// Start menu search filter
-document.getElementById('sm-inp').addEventListener('input', (e) => {
-  const q = e.target.value.toLowerCase();
-  document.querySelectorAll('.sm-card').forEach(c =>
-    c.style.display = c.textContent.toLowerCase().includes(q) ? '' : 'none');
-});
+// ================================================================
+// COMPREHENSIVE SYSTEM-WIDE START MENU SEARCH
+// ================================================================
+const SEARCHABLE_ITEMS = [
+  {
+    title: 'Virtual Networking Lab',
+    desc: 'Python L1–L5 TCP/IP Stack Simulation (BYU CS 460)',
+    icon: 'network',
+    color: '#38bdf8',
+    keywords: ['network', 'networking', 'internet', 'stack', 'simulator', 'tcp', 'ip', 'router', 'switch', 'dvrouter', 'mysocket', 'cs460', 'lab', 'packet', 'pytest', 'scenarios', 'bellman-ford', 'cidr'],
+    action: () => { show('vm-win'); closeStart(); }
+  },
+  {
+    title: 'Robot C++ Project',
+    desc: 'Arduino Embedded Systems & Hardware Project',
+    icon: 'bot',
+    color: '#a855f7',
+    keywords: ['robot', 'breadboard', 'arduino', 'c++', 'cpp', 'firmware', 'embedded', 'hardware', 'pin', 'controller', 'sensors', 'motor', 'circuit', 'ino'],
+    action: () => { openRobotApp(); closeStart(); }
+  },
+  {
+    title: 'Resume.pdf',
+    desc: 'Jacob Williams — Full Professional Resume (PDF)',
+    icon: 'file-text',
+    color: '#ef4444',
+    keywords: ['resume', 'cv', 'pdf', 'jacob williams', 'experience', 'education', 'skills', 'byu'],
+    action: () => { show('pdf-win'); closeStart(); }
+  },
+  {
+    title: 'Peace Corps Photos',
+    desc: '22 photos & Service Overview from rural Thailand',
+    icon: 'images',
+    color: '#ec4899',
+    keywords: ['photos', 'peace corps', 'pictures', 'images', 'thailand', 'gallery', 'service', 'volunteer', 'teacher'],
+    action: () => { openPhotosApp(0); closeStart(); }
+  },
+  {
+    title: 'Welcome.txt',
+    desc: 'Interactive Portfolio Guide & Overview in Notepad',
+    icon: 'file-text',
+    color: '#38bdf8',
+    keywords: ['welcome', 'welcome.txt', 'notepad', 'notes', 'guide', 'text', 'readme', 'intro', 'tour', 'txt'],
+    action: () => { show('notepad-win'); closeStart(); }
+  },
+  {
+    title: 'PowerShell',
+    desc: 'Administrator: Windows PowerShell — Python 3 REPL',
+    icon: 'terminal-square',
+    color: '#60a5fa',
+    keywords: ['powershell', 'terminal', 'python', 'cmd', 'cli', 'console', 'bash', 'repl', 'command prompt', 'shell'],
+    action: () => { show('ps-win'); closeStart(); }
+  },
+  {
+    title: 'File Explorer',
+    desc: 'Browse project files, source code, and media',
+    icon: 'folder',
+    color: '#fbbf24',
+    keywords: ['file explorer', 'explorer', 'folders', 'files', 'browse', 'directory', 'storage', 'projects'],
+    action: () => { openExplorer('root'); show('ex-win'); closeStart(); }
+  },
+  {
+    title: 'This PC',
+    desc: 'System drives and portfolio root directories',
+    icon: 'monitor',
+    color: '#3b82f6',
+    keywords: ['this pc', 'pc', 'computer', 'system', 'my computer', 'c:', 'drives'],
+    action: () => { openExplorer('root'); show('ex-win'); closeStart(); }
+  },
+  {
+    title: 'Recycle Bin',
+    desc: 'View deleted files and restore items',
+    icon: 'trash-2',
+    color: '#94a3b8',
+    keywords: ['recycle bin', 'bin', 'trash', 'deleted', 'restore', 'empty'],
+    action: () => { show('bin-win'); closeStart(); }
+  },
+  {
+    title: 'mysocket.py',
+    desc: 'RFC 793 TCP state machine & sliding window buffer',
+    icon: 'file-code',
+    color: '#38bdf8',
+    keywords: ['mysocket.py', 'mysocket', 'socket', 'tcp state machine', 'tcp handshake'],
+    action: () => { show('vm-win'); openCodeViewer('mysocket.py'); closeStart(); }
+  },
+  {
+    title: 'dvrouter.py',
+    desc: 'Distance-Vector Bellman-Ford routing engine',
+    icon: 'file-code',
+    color: '#f59e0b',
+    keywords: ['dvrouter.py', 'dvrouter', 'bellman ford', 'routing algorithm'],
+    action: () => { show('vm-win'); openCodeViewer('dvrouter.py'); closeStart(); }
+  },
+  {
+    title: 'switch.py',
+    desc: 'Layer 2 self-learning MAC table & frame flooding',
+    icon: 'file-code',
+    color: '#a855f7',
+    keywords: ['switch.py', 'switch', 'learning switch', 'layer 2', 'mac table'],
+    action: () => { show('vm-win'); openCodeViewer('switch.py'); closeStart(); }
+  },
+  {
+    title: 'forwarding_table.py',
+    desc: 'CIDR longest-prefix-match IP routing table',
+    icon: 'file-code',
+    color: '#10b981',
+    keywords: ['forwarding_table.py', 'forwarding', 'cidr', 'lpm', 'prefix match'],
+    action: () => { show('vm-win'); openCodeViewer('forwarding_table.py'); closeStart(); }
+  },
+  {
+    title: 'robot_controller.ino',
+    desc: 'Embedded C++ Arduino firmware for robot navigation',
+    icon: 'file-code',
+    color: '#38bdf8',
+    keywords: ['robot_controller.ino', 'robot_controller', 'ino', 'arduino code', 'c++ code'],
+    action: () => { openRobotApp('code'); loadRobotCodeFile('robot_controller.ino'); closeStart(); }
+  },
+  {
+    title: 'Quick Settings',
+    desc: 'Wi-Fi, Bluetooth, Audio Volume, Screen Brightness',
+    icon: 'settings',
+    color: '#94a3b8',
+    keywords: ['settings', 'wifi', 'wi-fi', 'volume', 'sound', 'audio', 'brightness', 'bluetooth', 'airplane mode'],
+    action: () => { toggleFlyout('qs-flyout'); closeStart(); }
+  }
+];
 
-// ================================================================
-// LOCK / UNLOCK
-// ================================================================
-function unlock() {
-  document.getElementById('lock').classList.add('gone');
-  show('ps-win'); // PowerShell terminal is actively open upon login
+function renderDefaultStartMenu() {
+  const grid = document.getElementById('sm-grid');
+  if (!grid) return;
+  grid.style.gridTemplateColumns = 'repeat(3, 1fr)';
+  grid.innerHTML = `
+    <div class="sm-card" onclick="openExplorer('root');show('ex-win');closeStart()">
+      <i data-lucide="folder" style="width:28px;height:28px;color:#fbbf24"></i> File Explorer
+    </div>
+    <div class="sm-card" onclick="show('ps-win');closeStart()">
+      <i data-lucide="terminal-square" style="width:28px;height:28px;color:#60a5fa"></i> PowerShell
+    </div>
+    <div class="sm-card" onclick="openExplorer('root');show('ex-win');closeStart()">
+      <i data-lucide="monitor" style="width:28px;height:28px;color:#3b82f6"></i> This PC
+    </div>
+  `;
+  lucide.createIcons();
 }
 
-function lockScreen() {
+let activeSearchResults = [];
+
+const smInpEl = document.getElementById('sm-inp');
+if (smInpEl) {
+  smInpEl.addEventListener('input', (e) => {
+    const q = e.target.value.trim().toLowerCase();
+    const grid = document.getElementById('sm-grid');
+    if (!grid) return;
+
+    if (!q) {
+      activeSearchResults = [];
+      renderDefaultStartMenu();
+      return;
+    }
+
+    activeSearchResults = SEARCHABLE_ITEMS.filter(item => {
+      if (item.title.toLowerCase().includes(q)) return true;
+      if (item.desc && item.desc.toLowerCase().includes(q)) return true;
+      if (item.keywords && item.keywords.some(k => k.toLowerCase().includes(q))) return true;
+      return false;
+    });
+
+    if (activeSearchResults.length === 0) {
+      grid.style.gridTemplateColumns = '1fr';
+      grid.innerHTML = `
+        <div style="padding: 24px 12px; text-align: center; color: var(--muted); font-size: 0.8rem; grid-column: 1/-1;">
+          <i data-lucide="search-x" style="width: 28px; height: 28px; margin: 0 auto 6px; opacity: 0.6; display: block;"></i>
+          No results found for "${esc(q)}"
+        </div>`;
+    } else {
+      grid.style.gridTemplateColumns = '1fr';
+      grid.innerHTML = activeSearchResults.map((item, idx) => `
+        <div class="sm-card" onclick="SEARCHABLE_ITEMS.find(x => x.title === '${esc(item.title)}').action()" style="flex-direction: row; align-items: center; justify-content: flex-start; text-align: left; padding: 8px 10px; gap: 10px; border-radius: 6px; background: rgba(255,255,255,0.04); margin-bottom: 2px;">
+          <i data-lucide="${item.icon}" style="width: 22px; height: 22px; color: ${item.color}; flex-shrink: 0;"></i>
+          <div style="overflow: hidden; flex: 1;">
+            <div style="font-size: 0.8rem; font-weight: 600; color: #f8fafc; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${item.title}</div>
+            <div style="font-size: 0.68rem; color: #94a3b8; text-overflow: ellipsis; white-space: nowrap; overflow: hidden;">${item.desc}</div>
+          </div>
+        </div>
+      `).join('');
+    }
+    lucide.createIcons();
+  });
+
+  smInpEl.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      if (activeSearchResults.length > 0) {
+        e.preventDefault();
+        activeSearchResults[0].action();
+      }
+    } else if (e.key === 'Escape') {
+      closeStart();
+    }
+  });
+}
+
+// ================================================================
+// SYSTEM POWER & CONTROLS (SHUT DOWN, RESTART, POWER ON)
+// ================================================================
+function shutDown() {
   closeStart();
   document.querySelectorAll('.flyout').forEach(f => f.classList.remove('open'));
-  document.getElementById('lock').classList.remove('gone');
+  const overlay = document.getElementById('power-screen-overlay');
+  const busyView = document.getElementById('power-busy-view');
+  const offView = document.getElementById('power-off-view');
+  const bootView = document.getElementById('power-boot-view');
+  const busyTxt = document.getElementById('power-busy-txt');
+
+  if (!overlay) return;
+  overlay.style.display = 'flex';
+  overlay.style.background = '#090d16';
+  if (busyTxt) busyTxt.textContent = 'Shutting down';
+  if (busyView) busyView.style.display = 'flex';
+  if (offView) offView.style.display = 'none';
+  if (bootView) bootView.style.display = 'none';
+  lucide.createIcons();
+
+  // Close all open windows
+  document.querySelectorAll('.win').forEach(w => close_(w.id));
+
+  setTimeout(() => {
+    if (busyView) busyView.style.display = 'none';
+    overlay.style.background = '#000000';
+    if (offView) offView.style.display = 'flex';
+    lucide.createIcons();
+  }, 1400);
+}
+
+function powerOnPC() {
+  const overlay = document.getElementById('power-screen-overlay');
+  const busyView = document.getElementById('power-busy-view');
+  const offView = document.getElementById('power-off-view');
+  const bootView = document.getElementById('power-boot-view');
+
+  if (!overlay) return;
+  if (offView) offView.style.display = 'none';
+  if (busyView) busyView.style.display = 'none';
+  if (bootView) bootView.style.display = 'flex';
+  overlay.style.background = '#000000';
+  lucide.createIcons();
+
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    if (bootView) bootView.style.display = 'none';
+    show('notepad-win');
+    focusWin('notepad-win');
+    lucide.createIcons();
+  }, 1600);
 }
 
 function restart() {
-  lockScreen();
-  setTimeout(unlock, 1200);
-}
+  closeStart();
+  document.querySelectorAll('.flyout').forEach(f => f.classList.remove('open'));
+  const overlay = document.getElementById('power-screen-overlay');
+  const busyView = document.getElementById('power-busy-view');
+  const offView = document.getElementById('power-off-view');
+  const bootView = document.getElementById('power-boot-view');
+  const busyTxt = document.getElementById('power-busy-txt');
 
-document.getElementById('lock-btn').addEventListener('click', unlock);
+  if (!overlay) return;
+  overlay.style.display = 'flex';
+  overlay.style.background = '#0b1120';
+  if (busyTxt) busyTxt.textContent = 'Restarting';
+  if (busyView) busyView.style.display = 'flex';
+  if (offView) offView.style.display = 'none';
+  if (bootView) bootView.style.display = 'none';
+  lucide.createIcons();
+
+  // Close all windows
+  document.querySelectorAll('.win').forEach(w => close_(w.id));
+
+  setTimeout(() => {
+    // Reboot / Boot sequence
+    if (busyView) busyView.style.display = 'none';
+    overlay.style.background = '#000000';
+    if (bootView) bootView.style.display = 'flex';
+    lucide.createIcons();
+
+    setTimeout(() => {
+      // Go back to home screen
+      overlay.style.display = 'none';
+      if (bootView) bootView.style.display = 'none';
+      show('notepad-win');
+      focusWin('notepad-win');
+      lucide.createIcons();
+    }, 1700);
+  }, 1400);
+}
 
 // Prevent unwanted browser zoom
 window.addEventListener('wheel', e => { if (e.ctrlKey) e.preventDefault(); }, { passive: false });
 
 // Desktop icon dragging & drag-to-Recycle-Bin
 let draggingIcon = null, iconOffset = { x: 0, y: 0 };
+let hasMovedIcon = false, startPointerPos = { x: 0, y: 0 };
+let suppressDesktopClickTime = 0;
+
 document.querySelectorAll('.dicon').forEach(icon => {
   icon.addEventListener('pointerdown', (e) => {
     if (e.button !== 0) return;
     e.stopPropagation();
     document.querySelectorAll('.dicon').forEach(i => i.classList.remove('selected'));
     icon.classList.add('selected');
-    icon.setPointerCapture(e.pointerId);
+    try { icon.setPointerCapture(e.pointerId); } catch(_) {}
     const r = icon.getBoundingClientRect();
     iconOffset = { x: e.clientX - r.left, y: e.clientY - r.top };
+    startPointerPos = { x: e.clientX, y: e.clientY };
+    hasMovedIcon = false;
     draggingIcon = icon;
   });
+
   icon.addEventListener('pointermove', (e) => {
     if (draggingIcon !== icon) return;
-    icon.style.left = Math.max(0, e.clientX - iconOffset.x) + 'px';
-    icon.style.top  = Math.max(0, e.clientY - iconOffset.y) + 'px';
+    const dist = Math.hypot(e.clientX - startPointerPos.x, e.clientY - startPointerPos.y);
+    if (dist > 4) {
+      hasMovedIcon = true;
+      icon.style.left = Math.max(0, e.clientX - iconOffset.x) + 'px';
+      icon.style.top  = Math.max(0, e.clientY - iconOffset.y) + 'px';
+    }
   });
+
   icon.addEventListener('pointerup', (e) => {
-    if (draggingIcon === icon && icon.id !== 'dic-bin') {
-      const bin = document.getElementById('dic-bin');
-      if (bin) {
-        const br = bin.getBoundingClientRect();
-        if (
-          e.clientX >= br.left && e.clientX <= br.right &&
-          e.clientY >= br.top  && e.clientY <= br.bottom
-        ) {
-          deleteDesktopIcon(icon.id);
+    if (draggingIcon === icon) {
+      if (hasMovedIcon) {
+        suppressDesktopClickTime = Date.now() + 400;
+        if (icon.id !== 'dic-bin') {
+          const bin = document.getElementById('dic-bin');
+          if (bin) {
+            const br = bin.getBoundingClientRect();
+            if (
+              e.clientX >= br.left && e.clientX <= br.right &&
+              e.clientY >= br.top  && e.clientY <= br.bottom
+            ) {
+              deleteDesktopIcon(icon.id);
+            }
+          }
         }
       }
     }
     draggingIcon = null;
+    hasMovedIcon = false;
   });
+
+  // Prevent click opening if the icon was dragged or dropped
+  icon.addEventListener('click', (e) => {
+    if (hasMovedIcon || Date.now() < suppressDesktopClickTime) {
+      e.preventDefault();
+      e.stopPropagation();
+      e.stopImmediatePropagation();
+      return false;
+    }
+  }, true);
 });
+
+// ================================================================
+// DEBIAN LINUX VM & LAB 13 FULL-STACK NETWORKING ENGINE
+// ================================================================
+// ================================================================
+// INTERNET STACK SIMULATOR CODE REPOSITORY (BYU CS 460)
+// ================================================================
+const NET_CODE_FILES = {
+  'mysocket.py': `from __future__ import annotations
+import asyncio
+import random
+from buffer import TCPSendBuffer, TCPReceiveBuffer
+from headers import IPv4Header, UDPHeader, TCPHeader, TCPIP_HEADER_LEN, UDPIP_HEADER_LEN
+
+TCP_FLAGS_SYN = 0x02
+TCP_FLAGS_RST = 0x04
+TCP_FLAGS_ACK = 0x10
+
+TCP_STATE_LISTEN = 0
+TCP_STATE_SYN_SENT = 1
+TCP_STATE_SYN_RECEIVED = 2
+TCP_STATE_ESTABLISHED = 3
+TCP_STATE_FIN_WAIT_1 = 4
+TCP_STATE_CLOSE_WAIT = 6
+TCP_STATE_CLOSED = 10
+
+class TCPSocket:
+    """Full RFC 793 Compliant TCP Socket implementation with sliding windows."""
+    def __init__(self, local_addr: str, local_port: int,
+            remote_addr: str, remote_port: int,
+            send_ip_packet_func: callable,
+            notify_on_data_func: callable) -> TCPSocket:
+        self._local_addr = local_addr
+        self._local_port = local_port
+        self._remote_addr = remote_addr
+        self._remote_port = remote_port
+        self._send_ip_packet = send_ip_packet_func
+        self._notify_on_data = notify_on_data_func
+        
+        self.state = TCP_STATE_CLOSED
+        self.seq = random.randint(1000, 50000)
+        self.ack = 0
+        self.send_buffer = TCPSendBuffer(self.seq)
+        self.receive_buffer = None
+
+    def connect(self) -> None:
+        """Initiate TCP 3-Way Handshake (Send SYN)."""
+        self.state = TCP_STATE_SYN_SENT
+        self._send_tcp_packet(flags=TCP_FLAGS_SYN, seq=self.seq, ack=0)
+
+    def handle_syn(self, seq: int) -> None:
+        """Process incoming SYN packet and return SYN-ACK."""
+        self.ack = seq + 1
+        self.receive_buffer = TCPReceiveBuffer(seq + 1)
+        self.state = TCP_STATE_SYN_RECEIVED
+        self._send_tcp_packet(flags=TCP_FLAGS_SYN | TCP_FLAGS_ACK, seq=self.seq, ack=self.ack)
+
+    def handle_synack(self, seq: int, ack: int) -> None:
+        """Process incoming SYN-ACK and transition to ESTABLISHED."""
+        if ack == self.seq + 1:
+            self.seq += 1
+            self.ack = seq + 1
+            self.receive_buffer = TCPReceiveBuffer(seq + 1)
+            self.state = TCP_STATE_ESTABLISHED
+            self._send_tcp_packet(flags=TCP_FLAGS_ACK, seq=self.seq, ack=self.ack)
+
+    def send(self, data: bytes) -> None:
+        """Stream byte data via TCPSendBuffer sliding window."""
+        if self.state == TCP_STATE_ESTABLISHED:
+            self.send_buffer.put(data)
+            self._flush_send_buffer()
+
+    def recv(self, max_bytes: int = 65536) -> bytes:
+        """Read in-order bytes from TCPReceiveBuffer."""
+        if self.receive_buffer:
+            return self.receive_buffer.get(max_bytes)
+        return b''`,
+
+  'dvrouter.py': `#!/usr/bin/python3
+import asyncio
+from transporthost import TransportHost
+from forwarding_table import ForwardingTable
+from prefix import Prefix
+
+INFINITY = 16
+
+class DVRouter(TransportHost):
+    """Distance-Vector Bellman-Ford Dynamic Routing Protocol over UDP."""
+    def __init__(self):
+        super().__init__()
+        self.forwarding_table = ForwardingTable()
+        self.distance_vector = {} # { prefix: (cost, next_hop) }
+
+    def handle_dv_message(self, src_ip: str, dv_entries: dict) -> None:
+        """Process periodic Distance-Vector advertisement from neighboring router."""
+        updated = False
+        for prefix, cost in dv_entries.items():
+            new_cost = min(cost + 1, INFINITY)
+            if prefix not in self.distance_vector or new_cost < self.distance_vector[prefix][0]:
+                self.distance_vector[prefix] = (new_cost, src_ip)
+                self.forwarding_table.add_entry(prefix, None, src_ip)
+                updated = True
+        if updated:
+            self.broadcast_dv()
+
+    def broadcast_dv(self) -> None:
+        """Broadcast distance vector table to all adjacent subnet routers over UDP."""
+        msg = {str(k): v[0] for k, v in self.distance_vector.items()}
+        for neighbor in self.get_neighbor_ips():
+            self.send_dv_packet(neighbor, msg)`,
+
+  'forwarding_table.py': `from prefix import Prefix
+
+class ForwardingTable(object):
+    """CIDR Longest Prefix Match (LPM) IP Forwarding Table Engine."""
+    def __init__(self):
+        self.entries = {}
+
+    def add_entry(self, prefix: str, intf: str, next_hop: str) -> None:
+        """Add longest-prefix match routing table entry."""
+        p = Prefix(prefix)
+        self.entries[p] = (intf, next_hop)
+
+    def get_entry(self, ip_address: str) -> tuple:
+        """Find longest matching prefix for destination IP address."""
+        best_prefix = None
+        best_len = -1
+        for p in self.entries:
+            if p.contains(ip_address) and p.length > best_len:
+                best_prefix = p
+                best_len = p.length
+        return self.entries.get(best_prefix, (None, None))`,
+
+  'switch.py': `#!/usr/bin/python3
+from cougarnet.sim.host import BaseHost
+
+class Switch(BaseHost):
+    """Layer-2 Self-Learning Ethernet Switch with MAC table learning."""
+    def __init__(self):
+        super().__init__()
+        self.mac_table = {} # { mac_address: (port, timestamp) }
+
+    def _handle_frame(self, frame: bytes, intf: str) -> None:
+        src_mac = frame[6:12].hex(':')
+        dst_mac = frame[0:6].hex(':')
+        
+        # Self-learning: log source MAC to interface mapping
+        self.mac_table[src_mac] = intf
+        
+        # Unicast or Flood
+        if dst_mac in self.mac_table:
+            self.send_frame(frame, self.mac_table[dst_mac])
+        else:
+            self.flood_frame(frame, exclude_intf=intf)`,
+
+  'buffer.py': `class TCPSendBuffer:
+    """TCP Sliding-Window Byte Queue & Transmission Buffer."""
+    def __init__(self, initial_seq: int):
+        self.base_seq = initial_seq
+        self.buffer = bytearray()
+
+    def put(self, data: bytes) -> None:
+        self.buffer.extend(data)
+
+    def get_window(self, size: int) -> bytes:
+        return bytes(self.buffer[:size])
+
+class TCPReceiveBuffer:
+    """TCP Cumulative Reassembly Buffer for Out-of-Order Packets."""
+    def __init__(self, initial_seq: int):
+        self.expected_seq = initial_seq
+        self.data = bytearray()
+        self.out_of_order = {}
+
+    def put(self, seq: int, data: bytes) -> None:
+        if seq == self.expected_seq:
+            self.data.extend(data)
+            self.expected_seq += len(data)
+            # Reassemble any cached contiguous chunks
+            while self.expected_seq in self.out_of_order:
+                chunk = self.out_of_order.pop(self.expected_seq)
+                self.data.extend(chunk)
+                self.expected_seq += len(chunk)
+        elif seq > self.expected_seq:
+            self.out_of_order[seq] = data`,
+
+  'headers.py': `import struct
+
+class IPv4Header:
+    """IPv4 Packet Header Serialization and Checksum Computation."""
+    def __init__(self, src: str, dst: str, proto: int, length: int):
+        self.src = src
+        self.dst = dst
+        self.proto = proto
+        self.length = length
+
+    def serialize(self) -> bytes:
+        return struct.pack('!BBHHHBBH4s4s', 0x45, 0, self.length, 0, 0, 64, self.proto, 0,
+                           bytes(map(int, self.src.split('.'))),
+                           bytes(map(int, self.dst.split('.'))))`,
+
+  'host.py': `import asyncio
+from cougarnet.sim.host import BaseHost
+
+class Host(BaseHost):
+    """Base Internet Host with ARP cache and Subnet Broadcast Delivery."""
+    def _handle_frame(self, frame: bytes, intf: str) -> None:
+        dst_ip = self.extract_dst_ip(frame)
+        local_ip = self.ipv4_address_single(intf)
+        
+        # Subnet broadcast handling (e.g. 10.0.0.255)
+        if dst_ip == '10.0.0.255' or dst_ip == local_ip:
+            self.process_incoming_packet(frame)
+        else:
+            pass # Ignore packets for other subnets`,
+
+  'scenario5.py': `#!/usr/bin/python3
+import asyncio, random, socket, sys
+from echoserver import EchoServerTCP
+from nc import NetcatTCP
+from transporthost import TransportHost
+
+class SimHost(TransportHost):
+    """Multi-Hop Full-Stack Simulation Driver."""
+    def start_nc(self, remote_addr, remote_port):
+        intf = self.physical_interface_single()
+        local_addr = self.ipv4_address_single(intf)
+        local_port = random.randint(1024, 65536)
+        self.nc = NetcatTCP(local_addr, local_port, remote_addr, remote_port, self.send_packet)
+        self.install_socket_tcp(local_addr, local_port, remote_addr, remote_port, self.nc.sock)
+
+    def start_echo(self, local_port):
+        intf = self.physical_interface_single()
+        local_addr = self.ipv4_address_single(intf)
+        self.echo = EchoServerTCP(local_addr, local_port, self.install_socket_tcp, self.send_packet)
+        self.install_listener_tcp(local_addr, local_port, self.echo.sock)`,
+
+  'echoserver.py': `from mysocket import TCPListenerSocket
+
+class EchoServerTCP:
+    """Full-Duplex TCP Echo Server Daemon."""
+    def __init__(self, local_addr, local_port, install_client_sock, send_ip_packet_func):
+        self.sock = TCPListenerSocket(local_addr, local_port, self.handle_new_client, send_ip_packet_func)
+        self._install_client_sock = install_client_sock
+
+    def handle_new_client(self, local_addr, local_port, remote_addr, remote_port, sock):
+        self._install_client_sock(local_addr, local_port, remote_addr, remote_port, sock)
+        sock._notify_on_data = lambda: self.handle_data(sock)
+
+    def handle_data(self, sock):
+        data = sock.recv(65536)
+        if data:
+            sock.send(data)`,
+
+  'prefix.py': `import socket, binascii
+
+class Prefix:
+    """Bitwise IP Prefix Class for CIDR Subnet Lookups."""
+    def __init__(self, prefix_str: str):
+        ip_str, len_str = prefix_str.split('/')
+        self.length = int(len_str)
+        self.prefix_str = prefix_str
+        self.mask = (0xFFFFFFFF << (32 - self.length)) & 0xFFFFFFFF
+        self.network = int.from_bytes(socket.inet_aton(ip_str), 'big') & self.mask
+
+    def contains(self, ip_address: str) -> bool:
+        ip_int = int.from_bytes(socket.inet_aton(ip_address), 'big')
+        return (ip_int & self.mask) == self.network`,
+
+  'README.md': `# BYU CS 460 Computer Networking - Full-Stack Internet Protocol Suite
+Author: Jacob Williams
+Environment: Linux (Debian 12), CougarNet Virtual Network Topology
+
+## Layer Architecture & Implementation
+
+- **Layer 5 (Application):** \`EchoServerTCP\` and \`NetcatTCP\` — client/server apps communicating over custom TCP stream sockets.
+- **Layer 4 (Transport):** \`mysocket.py\` & \`buffer.py\` — full TCP state machine (3-way handshake, SYN/ACK), sliding window flow control, and out-of-order segment reassembly.
+- **Layer 3 (Network & Routing):** \`forwarding_table.py\` — CIDR longest-prefix-match routing; \`dvrouter.py\` — Distance-Vector (Bellman-Ford) route convergence over UDP.
+- **Layer 2 (Data Link):** \`switch.py\` — self-learning MAC address table with broadcast flooding for unknown destinations.
+- **Layer 1 (Physical):** Linux virtual Ethernet (\`veth\`) point-to-point interconnects.`
+};
+
+// ================================================================
+// BREADBOARD ROBOT CODE REPOSITORY (ARDUINO / EMBEDDED C++)
+// ================================================================
+const ROBOT_CODE_FILES = {
+  'robot_controller.ino': `/**
+ * Project: Autonomous Breadboard Robot (Embedded Systems & Hardware)
+ * Author: Jacob Williams
+ * Hardware: Arduino / ATmega328P, L298N Dual H-Bridge, IR & Ultrasonic Sensors
+ * Language: Embedded C++ / Arduino IDE
+ * 
+ * Hardware Architecture Notes:
+ * - 100uF Electrolytic Capacitor: Placed across 5V/VCC rail to smooth inrush voltage drops.
+ * - 0.1uF Ceramic Decoupling Capacitors: Soldered on motor terminals for RF spark noise filtering.
+ * - Flyback Diodes (1N4007): Clamp back-EMF inductive spikes during PWM motor deceleration.
+ */
+
+#include "pin_config.h"
+
+enum RobotState {
+  STATE_IDLE,
+  STATE_FORWARD,
+  STATE_OBSTACLE_AVOID,
+  STATE_ROTATE_LEFT,
+  STATE_ROTATE_RIGHT,
+  STATE_REVERSE,
+  STATE_EMERGENCY_STOP
+};
+
+RobotState currentState = STATE_IDLE;
+uint8_t currentSpeed = DEFAULT_MOTOR_SPEED;
+unsigned long lastTelemetryTime = 0;
+
+void setup() {
+  Serial.begin(115200);
+  while (!Serial) { ; }
+
+  Serial.println(F("[BOOT] Jacob Williams - Breadboard Robot Controller (115200 Baud)"));
+  Serial.println(F("[BOOT] Initializing GPIO pin modes..."));
+
+  pinMode(PIN_MOTOR_LEFT_PWM, OUTPUT);
+  pinMode(PIN_MOTOR_LEFT_IN1, OUTPUT);
+  pinMode(PIN_MOTOR_LEFT_IN2, OUTPUT);
+  pinMode(PIN_MOTOR_RIGHT_PWM, OUTPUT);
+  pinMode(PIN_MOTOR_RIGHT_IN3, OUTPUT);
+  pinMode(PIN_MOTOR_RIGHT_IN4, OUTPUT);
+
+  pinMode(PIN_IR_LEFT_SENSOR, INPUT);
+  pinMode(PIN_IR_RIGHT_SENSOR, INPUT);
+  pinMode(PIN_ULTRASONIC_TRIG, OUTPUT);
+  pinMode(PIN_ULTRASONIC_ECHO, INPUT);
+  pinMode(PIN_STATUS_LED, OUTPUT);
+
+  haltMotors();
+  Serial.println(F("[BOOT] GPIO & Decoupling Filter: ACTIVE"));
+  currentState = STATE_FORWARD;
+}
+
+void loop() {
+  processSerialCommands();
+
+  int irLeft = digitalRead(PIN_IR_LEFT_SENSOR);
+  int irRight = digitalRead(PIN_IR_RIGHT_SENSOR);
+  float distanceCm = measureUltrasonicDistanceCm();
+
+  updateStateMachine(irLeft, irRight, distanceCm);
+
+  if (millis() - lastTelemetryTime >= 500) {
+    lastTelemetryTime = millis();
+    outputTelemetry(irLeft, irRight, distanceCm);
+  }
+  delay(20);
+}
+
+float measureUltrasonicDistanceCm() {
+  digitalWrite(PIN_ULTRASONIC_TRIG, LOW);
+  delayMicroseconds(2);
+  digitalWrite(PIN_ULTRASONIC_TRIG, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(PIN_ULTRASONIC_TRIG, LOW);
+
+  long durationUs = pulseIn(PIN_ULTRASONIC_ECHO, HIGH, 25000);
+  if (durationUs == 0) return 999.0;
+  return (durationUs * 0.0343) / 2.0;
+}
+
+void updateStateMachine(int irLeft, int irRight, float distanceCm) {
+  if (distanceCm < OBSTACLE_THRESHOLD_CM && distanceCm > 0.5) {
+    driveReverse(currentSpeed);
+    delay(250);
+    turnRight(currentSpeed);
+    delay(300);
+    currentState = STATE_FORWARD;
+    return;
+  }
+  if (irLeft == LOW && irRight == HIGH) {
+    currentState = STATE_ROTATE_RIGHT;
+    turnRight(currentSpeed * 0.85);
+  } else if (irLeft == HIGH && irRight == LOW) {
+    currentState = STATE_ROTATE_LEFT;
+    turnLeft(currentSpeed * 0.85);
+  } else {
+    currentState = STATE_FORWARD;
+    driveForward(currentSpeed);
+  }
+}
+
+void driveForward(uint8_t speed) {
+  digitalWrite(PIN_MOTOR_LEFT_IN1, HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_IN2, LOW);
+  analogWrite(PIN_MOTOR_LEFT_PWM, speed);
+  digitalWrite(PIN_MOTOR_RIGHT_IN3, HIGH);
+  digitalWrite(PIN_MOTOR_RIGHT_IN4, LOW);
+  analogWrite(PIN_MOTOR_RIGHT_PWM, speed);
+}
+
+void driveReverse(uint8_t speed) {
+  digitalWrite(PIN_MOTOR_LEFT_IN1, LOW);
+  digitalWrite(PIN_MOTOR_LEFT_IN2, HIGH);
+  analogWrite(PIN_MOTOR_LEFT_PWM, speed);
+  digitalWrite(PIN_MOTOR_RIGHT_IN3, LOW);
+  digitalWrite(PIN_MOTOR_RIGHT_IN4, HIGH);
+  analogWrite(PIN_MOTOR_RIGHT_PWM, speed);
+}
+
+void turnLeft(uint8_t speed) {
+  digitalWrite(PIN_MOTOR_LEFT_IN1, LOW);
+  digitalWrite(PIN_MOTOR_LEFT_IN2, HIGH);
+  analogWrite(PIN_MOTOR_LEFT_PWM, speed * 0.6);
+  digitalWrite(PIN_MOTOR_RIGHT_IN3, HIGH);
+  digitalWrite(PIN_MOTOR_RIGHT_IN4, LOW);
+  analogWrite(PIN_MOTOR_RIGHT_PWM, speed);
+}
+
+void turnRight(uint8_t speed) {
+  digitalWrite(PIN_MOTOR_LEFT_IN1, HIGH);
+  digitalWrite(PIN_MOTOR_LEFT_IN2, LOW);
+  analogWrite(PIN_MOTOR_LEFT_PWM, speed);
+  digitalWrite(PIN_MOTOR_RIGHT_IN3, LOW);
+  digitalWrite(PIN_MOTOR_RIGHT_IN4, HIGH);
+  analogWrite(PIN_MOTOR_RIGHT_PWM, speed * 0.6);
+}
+
+void haltMotors() {
+  digitalWrite(PIN_MOTOR_LEFT_IN1, LOW);
+  digitalWrite(PIN_MOTOR_LEFT_IN2, LOW);
+  analogWrite(PIN_MOTOR_LEFT_PWM, 0);
+  digitalWrite(PIN_MOTOR_RIGHT_IN3, LOW);
+  digitalWrite(PIN_MOTOR_RIGHT_IN4, LOW);
+  analogWrite(PIN_MOTOR_RIGHT_PWM, 0);
+}
+
+void outputTelemetry(int irL, int irR, float dist) {
+  Serial.print(F("[TELEMETRY] T: "));
+  Serial.print(millis() / 1000.0, 1);
+  Serial.print(F("s | State: "));
+  Serial.print(currentState == STATE_FORWARD ? F("FORWARD       ") : F("AVOIDING      "));
+  Serial.print(F(" | Dist: "));
+  if (dist < 900) { Serial.print(dist, 1); Serial.print(F("cm")); }
+  else { Serial.print(F("CLEAR ")); }
+  Serial.print(F(" | IR: [L:"));
+  Serial.print(irL);
+  Serial.print(F(", R:"));
+  Serial.print(irR);
+  Serial.print(F("] | PWM: "));
+  Serial.println(currentSpeed);
+}
+
+void processSerialCommands() {
+  if (Serial.available() > 0) {
+    String cmd = Serial.readStringUntil('\n');
+    cmd.trim();
+    if (cmd.equalsIgnoreCase("PING")) {
+      Serial.println(F("[SERIAL TX] PONG (MCU Online, VCC=5.04V)"));
+    } else if (cmd.equalsIgnoreCase("STOP")) {
+      currentState = STATE_EMERGENCY_STOP;
+      haltMotors();
+      Serial.println(F("[SERIAL TX] EMERGENCY STOP EXECUTED"));
+    } else if (cmd.equalsIgnoreCase("START")) {
+      currentState = STATE_FORWARD;
+      Serial.println(F("[SERIAL TX] RESUMING AUTONOMOUS NAVIGATION"));
+    }
+  }
+}`,
+
+  'pin_config.h': `#ifndef PIN_CONFIG_H
+#define PIN_CONFIG_H
+
+#include <Arduino.h>
+
+// Left Motor - L298N H-Bridge Direction & PWM
+#define PIN_MOTOR_LEFT_PWM      5   // Timer0 PWM Output
+#define PIN_MOTOR_LEFT_IN1      7   // Digital Output
+#define PIN_MOTOR_LEFT_IN2      8   // Digital Output
+
+// Right Motor - L298N H-Bridge Direction & PWM
+#define PIN_MOTOR_RIGHT_PWM     6   // Timer0 PWM Output
+#define PIN_MOTOR_RIGHT_IN3     9   // Digital Output
+#define PIN_MOTOR_RIGHT_IN4     10  // Digital Output
+
+// Optical & Distance Sensors
+#define PIN_IR_LEFT_SENSOR      2   // Digital Input (Active LOW)
+#define PIN_IR_RIGHT_SENSOR     3   // Digital Input (Active LOW)
+#define PIN_ULTRASONIC_TRIG     11  // 10us Trigger Pulse
+#define PIN_ULTRASONIC_ECHO     12  // Echo Pulse Input
+
+// Debug Status Indicator
+#define PIN_STATUS_LED          13  // Onboard LED
+
+// Calibration & Thresholds
+#define DEFAULT_MOTOR_SPEED     185   // 0-255 PWM duty cycle (~72%)
+#define OBSTACLE_THRESHOLD_CM   15.0  // Distance to trigger avoidance maneuver
+
+#endif // PIN_CONFIG_H`,
+
+  'README.md': `# Autonomous Breadboard Robot (Light Following & Obstacle Avoidance)
+Author: Jacob Williams
+Platform: Arduino Uno (ATmega328P), Breadboard Architecture, L298N H-Bridge Driver
+Firmware: robot_controller.ino, pin_config.h
+
+## Architecture: Perception → Planning → Action
+1. **Perception:** reads each button/pin and sets sensed-state variables (e.g., SensedLightLeft, SensedLightUp) on/off.
+2. **Planning:** finite state machines decide behavior based on sensed state. 
+3. **Action:** a switch statement (or small FSM) turns LEDs/motors/servo on or off based on the planning state.`
+};
+
+// ================================================================
+// APPLICATION CONTROLLERS (CODE VIEWER, VM, ROBOT)
+// ================================================================
+
+// ================================================================
+// CODE SYNTAX HIGHLIGHTING ENGINE (C++, PYTHON, MARKDOWN)
+// ================================================================
+
+function highlightCpp(code) {
+  const lines = code.split('\n');
+  return lines.map((line, idx) => {
+    return `<div class="code-line"><span class="line-num">${idx + 1}</span><span class="line-code">${highlightCppLine(line)}</span></div>`;
+  }).join('');
+}
+
+function highlightCppLine(line) {
+  if (!line) return '&nbsp;';
+
+  let codePart = line;
+  let commentPart = '';
+  const commentIdx = line.indexOf('//');
+  if (commentIdx !== -1) {
+    codePart = line.substring(0, commentIdx);
+    commentPart = line.substring(commentIdx);
+  }
+
+  const trimmed = line.trim();
+  if (trimmed.startsWith('/*') || trimmed.startsWith('*') || trimmed.endsWith('*/')) {
+    return `<span class="syn-comm">${esc(line)}</span>`;
+  }
+
+  const tokenRegex = /("(?:\\.|[^"\\])*"|<[a-zA-Z0-9_\.]+\.h>|#(?:include|define|ifndef|endif|ifdef|pragma)\b|\b0x[0-9a-fA-F]+\b|\b\d+(?:\.\d+)?f?\b|\b[a-zA-Z_][a-zA-Z0-9_]*\b)/g;
+  const kwds = new Set(['enum', 'void', 'const', 'struct', 'class', 'return', 'if', 'else', 'while', 'for', 'switch', 'case', 'break', 'default', 'new', 'delete', 'true', 'false']);
+  const types = new Set(['RobotState', 'String', 'uint8_t', 'uint16_t', 'uint32_t', 'int8_t', 'int16_t', 'int32_t', 'int', 'float', 'double', 'long', 'unsigned', 'bool', 'byte', 'char', 'size_t']);
+  const consts = new Set(['HIGH', 'LOW', 'INPUT', 'OUTPUT', 'INPUT_PULLUP', 'STATE_IDLE', 'STATE_FORWARD', 'STATE_OBSTACLE_AVOID', 'STATE_ROTATE_LEFT', 'STATE_ROTATE_RIGHT', 'STATE_REVERSE', 'STATE_EMERGENCY_STOP', 'DEFAULT_MOTOR_SPEED', 'OBSTACLE_THRESHOLD_CM', 'PIN_MOTOR_LEFT_PWM', 'PIN_MOTOR_LEFT_IN1', 'PIN_MOTOR_LEFT_IN2', 'PIN_MOTOR_RIGHT_PWM', 'PIN_MOTOR_RIGHT_IN3', 'PIN_MOTOR_RIGHT_IN4', 'PIN_IR_LEFT_SENSOR', 'PIN_IR_RIGHT_SENSOR', 'PIN_ULTRASONIC_TRIG', 'PIN_ULTRASONIC_ECHO', 'PIN_STATUS_LED', 'PIN_CONFIG_H']);
+
+  let lastIdx = 0;
+  let out = '';
+  let match;
+
+  while ((match = tokenRegex.exec(codePart)) !== null) {
+    if (match.index > lastIdx) {
+      out += esc(codePart.substring(lastIdx, match.index));
+    }
+    lastIdx = tokenRegex.lastIndex;
+    const token = match[0];
+
+    if (token.startsWith('"') || token.startsWith('<')) {
+      out += `<span class="syn-str">${esc(token)}</span>`;
+    } else if (token.startsWith('#')) {
+      out += `<span class="syn-prep">${esc(token)}</span>`;
+    } else if (kwds.has(token)) {
+      out += `<span class="syn-kwd">${esc(token)}</span>`;
+    } else if (types.has(token)) {
+      out += `<span class="syn-type">${esc(token)}</span>`;
+    } else if (consts.has(token)) {
+      out += `<span class="syn-macro">${esc(token)}</span>`;
+    } else if (/^(0x[0-9a-fA-F]+|\d+(?:\.\d+)?f?)$/.test(token)) {
+      out += `<span class="syn-num">${esc(token)}</span>`;
+    } else if (codePart.substring(lastIdx).match(/^\s*\(/)) {
+      out += `<span class="syn-func">${esc(token)}</span>`;
+    } else {
+      out += esc(token);
+    }
+  }
+
+  if (lastIdx < codePart.length) {
+    out += esc(codePart.substring(lastIdx));
+  }
+
+  if (commentPart) {
+    out += `<span class="syn-comm">${esc(commentPart)}</span>`;
+  }
+
+  return out;
+}
+
+function highlightPython(code) {
+  const lines = code.split('\n');
+  return lines.map((line, idx) => {
+    return `<div class="code-line"><span class="line-num">${idx + 1}</span><span class="line-code">${highlightPythonLine(line)}</span></div>`;
+  }).join('');
+}
+
+function highlightPythonLine(line) {
+  if (!line) return '&nbsp;';
+
+  let codePart = line;
+  let commentPart = '';
+  const hashIdx = line.indexOf('#');
+  if (hashIdx !== -1) {
+    codePart = line.substring(0, hashIdx);
+    commentPart = line.substring(hashIdx);
+  }
+
+  const tokenRegex = /(b?"""[\s\S]*?"""|b?'''[\s\S]*?'''|b?"(?:\\.|[^"\\])*"|b?'(?:\\.|[^'\\])*'|@[a-zA-Z_][a-zA-Z0-9_]*|\b0x[0-9a-fA-F]+\b|\b\d+(?:\.\d+)?\b|\b[a-zA-Z_][a-zA-Z0-9_]*\b)/g;
+  const kwds = new Set(['from', 'import', 'def', 'class', 'return', 'if', 'elif', 'else', 'while', 'for', 'in', 'is', 'not', 'and', 'or', 'lambda', 'pass', 'super', 'asyncio', 'async', 'await', 'try', 'except', 'finally', 'with', 'as', 'raise', 'yield', 'global', 'nonlocal', 'None', 'True', 'False']);
+  const types = new Set(['self', 'int', 'str', 'bytes', 'bytearray', 'dict', 'list', 'tuple', 'set', 'bool', 'float', 'callable', 'object', 'TCPSocket', 'TCPListenerSocket', 'ForwardingTable', 'DVRouter', 'Switch', 'Host', 'Prefix', 'EchoServerTCP', 'NetcatTCP', 'SimHost', 'TCPSendBuffer', 'TCPReceiveBuffer', 'IPv4Header', 'UDPHeader', 'TCPHeader', 'BaseHost', 'TransportHost']);
+  const consts = new Set(['TCP_FLAGS_SYN', 'TCP_FLAGS_RST', 'TCP_FLAGS_ACK', 'TCP_STATE_LISTEN', 'TCP_STATE_SYN_SENT', 'TCP_STATE_SYN_RECEIVED', 'TCP_STATE_ESTABLISHED', 'TCP_STATE_FIN_WAIT_1', 'TCP_STATE_CLOSE_WAIT', 'TCP_STATE_CLOSED', 'INFINITY', 'TCPIP_HEADER_LEN', 'UDPIP_HEADER_LEN', 'IPPROTO_TCP', 'IPPROTO_UDP']);
+
+  let lastIdx = 0;
+  let out = '';
+  let match;
+
+  while ((match = tokenRegex.exec(codePart)) !== null) {
+    if (match.index > lastIdx) {
+      out += esc(codePart.substring(lastIdx, match.index));
+    }
+    lastIdx = tokenRegex.lastIndex;
+    const token = match[0];
+
+    if (token.startsWith('"') || token.startsWith("'") || token.startsWith('b"') || token.startsWith("b'")) {
+      out += `<span class="syn-str">${esc(token)}</span>`;
+    } else if (token.startsWith('@')) {
+      out += `<span class="syn-prep">${esc(token)}</span>`;
+    } else if (kwds.has(token)) {
+      out += `<span class="syn-kwd">${esc(token)}</span>`;
+    } else if (types.has(token)) {
+      out += `<span class="syn-type">${esc(token)}</span>`;
+    } else if (consts.has(token)) {
+      out += `<span class="syn-macro">${esc(token)}</span>`;
+    } else if (/^(0x[0-9a-fA-F]+|\d+(?:\.\d+)?)$/.test(token)) {
+      out += `<span class="syn-num">${esc(token)}</span>`;
+    } else if (codePart.substring(lastIdx).match(/^\s*\(/)) {
+      out += `<span class="syn-func">${esc(token)}</span>`;
+    } else {
+      out += esc(token);
+    }
+  }
+
+  if (lastIdx < codePart.length) {
+    out += esc(codePart.substring(lastIdx));
+  }
+
+  if (commentPart) {
+    out += `<span class="syn-comm">${esc(commentPart)}</span>`;
+  }
+
+  return out;
+}
+
+function highlightMarkdown(code) {
+  const lines = code.split('\n');
+  return lines.map((line, idx) => {
+    let escLine = esc(line);
+    if (escLine.startsWith('#')) {
+      escLine = `<span style="color:#38bdf8;font-weight:700">${escLine}</span>`;
+    } else if (escLine.startsWith('- ') || escLine.startsWith('* ')) {
+      escLine = `<span style="color:#34d399">${escLine.substring(0, 2)}</span>${escLine.substring(2)}`;
+    }
+    // bold **...**
+    escLine = escLine.replace(/\*\*(.*?)\*\*/g, '<strong style="color:#f8fafc">$1</strong>');
+    // inline code `...`
+    escLine = escLine.replace(/`([^`]+)`/g, '<code style="background:rgba(255,255,255,0.08);padding:1px 4px;border-radius:3px;color:#a7f3d0">$1</code>');
+
+    return `<div class="code-line"><span class="line-num">${idx + 1}</span><span class="line-code">${escLine}</span></div>`;
+  }).join('');
+}
+
+function renderHighlightedCode(filename, code) {
+  if (!code) return '';
+  if (filename.endsWith('.ino') || filename.endsWith('.h') || filename.endsWith('.cpp') || filename.endsWith('.c')) {
+    return highlightCpp(code);
+  } else if (filename.endsWith('.py')) {
+    return highlightPython(code);
+  } else if (filename.endsWith('.md')) {
+    return highlightMarkdown(code);
+  }
+  return code.split('\n').map((l, i) => `<div class="code-line"><span class="line-num">${i + 1}</span><span class="line-code">${esc(l)}</span></div>`).join('');
+}
+
+function openCodeViewer(filename) {
+  show('vm-win');
+  switchVmTab('code');
+  loadCodeFile(filename);
+}
+
+function loadCodeFile(filename, el) {
+  if (el) {
+    document.querySelectorAll('#code-tabs-bar .code-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  } else {
+    document.querySelectorAll('#code-tabs-bar .code-tab').forEach(t => {
+      if (t.textContent.trim().includes(filename)) t.classList.add('active');
+      else t.classList.remove('active');
+    });
+  }
+  const display = document.getElementById('code-file-display');
+  if (display) {
+    const raw = NET_CODE_FILES[filename] || `# File: ${filename}\n# Source code loaded.`;
+    display.innerHTML = renderHighlightedCode(filename, raw);
+  }
+}
+
+function switchVmTab(tab) {
+  document.querySelectorAll('.vm-pane').forEach(p => p.style.display = 'none');
+  document.querySelectorAll('.vm-scenario-bar .vm-tab-btn').forEach(b => {
+    if (b.id && b.id.startsWith('tab-btn-')) b.classList.remove('active');
+  });
+
+  const pane = document.getElementById(`vm-pane-${tab}`);
+  const btn = document.getElementById(`tab-btn-${tab}`);
+  if (pane) {
+    pane.style.display = 'flex';
+    pane.classList.add('active');
+  }
+  if (btn) btn.classList.add('active');
+
+  if (tab === 'code') {
+    const activeTab = document.querySelector('#code-tabs-bar .code-tab.active');
+    const filename = activeTab ? activeTab.textContent.trim() : 'mysocket.py';
+    loadCodeFile(filename);
+  }
+  lucide.createIcons();
+}
+
+function openRobotApp(tab = 'code') {
+  show('robot-win');
+  switchRobotTab(tab);
+}
+
+function switchRobotTab(tab) {
+  document.querySelectorAll('.robot-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.robot-tabs .vm-tab-btn').forEach(b => b.classList.remove('active'));
+  const pane = document.getElementById(`robot-pane-${tab}`);
+  const btn = document.getElementById(`tab-btn-r-${tab}`);
+  if (pane) pane.classList.add('active');
+  if (btn) btn.classList.add('active');
+  if (tab === 'code') {
+    const activeTab = document.querySelector('#robot-code-tabs-bar .code-tab.active');
+    const filename = activeTab ? activeTab.textContent.trim() : 'robot_controller.ino';
+    loadRobotCodeFile(filename);
+  }
+  lucide.createIcons();
+}
+
+function loadRobotCodeFile(filename, el) {
+  if (el) {
+    document.querySelectorAll('#robot-code-tabs-bar .code-tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  } else {
+    document.querySelectorAll('#robot-code-tabs-bar .code-tab').forEach(t => {
+      if (t.textContent.trim().includes(filename)) t.classList.add('active');
+      else t.classList.remove('active');
+    });
+  }
+  const display = document.getElementById('robot-code-display');
+  if (display) {
+    const raw = ROBOT_CODE_FILES[filename] || `// File: ${filename}\n// Source code loaded.`;
+    display.innerHTML = renderHighlightedCode(filename, raw);
+  }
+}
+
+// Terminal Execution Engine
+let activeScenarioTimeouts = [];
+
+function logVmTerm(lineHtml) {
+  const stream = document.getElementById('vm-log-stream');
+  if (!stream) return;
+  const div = document.createElement('div');
+  div.className = 'vm-log-line';
+  div.innerHTML = lineHtml;
+  stream.appendChild(div);
+  const term = document.getElementById('vm-term');
+  if (term) term.scrollTop = term.scrollHeight;
+}
+
+function clearVmTerm() {
+  const stream = document.getElementById('vm-log-stream');
+  if (stream) stream.innerHTML = '';
+}
+
+function stopScenario() {
+  activeScenarioTimeouts.forEach(t => clearTimeout(t));
+  activeScenarioTimeouts = [];
+  document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx', 'active-rx'));
+  clearAllNodeBadges();
+  setLiveExplainer('Terminal log and simulation state cleared. Click any scenario button above to run a test.', 'SYSTEM IDLE', '#475569');
+}
+
+function setLiveExplainer(text, layerBadge = 'SYSTEM ACTIVE', badgeColor = '#0284c7') {
+  const el = document.getElementById('live-explainer-txt');
+  const badge = document.getElementById('scen-layer-badge');
+  if (el) el.innerHTML = text;
+  if (badge) {
+    badge.textContent = layerBadge;
+    badge.style.background = badgeColor;
+  }
+}
+
+function setNodeBadge(nodeId, text, type = 'info') {
+  const node = document.getElementById(`node-${nodeId}`);
+  if (!node) return;
+  let badge = node.querySelector('.topo-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    node.appendChild(badge);
+  }
+  badge.className = `topo-badge ${type}`;
+  badge.textContent = text;
+}
+
+function clearAllNodeBadges() {
+  document.querySelectorAll('.topo-badge').forEach(b => b.remove());
+}
+
+function openScenarioGuide() {
+  const overlay = document.getElementById('scen-guide-overlay');
+  if (overlay) {
+    overlay.style.display = 'flex';
+    lucide.createIcons();
+  }
+}
+
+function closeScenarioGuide() {
+  const overlay = document.getElementById('scen-guide-overlay');
+  if (overlay) overlay.style.display = 'none';
+}
+
+function inspectNode(nodeId) {
+  const nodeInfo = {
+    'a': 'Host A: IP=10.0.0.1/24, MAC=00:aa:00:00:00:01, Intf=a-s1, App=NetcatTCP (Client)',
+    'b': 'Host B: IP=10.0.0.2/24, MAC=00:bb:00:00:00:02, Intf=b-s1, App=NetcatTCP (Client)',
+    's1': 'Switch S1: Layer-2 Self-Learning Switch, Subnet 10.0.0.0/24 (Ports: s1-a, s1-b, s1-r1)',
+    'r1': 'Router R1: DVRouter (eth0=10.0.0.3, eth1=10.0.1.1), Forwarding Table=Dynamic DV',
+    'r2': 'Router R2: DVRouter (eth0=10.0.1.2, eth1=10.0.2.1), Forwarding Table=Dynamic DV',
+    'r3': 'Router R3: DVRouter (eth0=10.0.2.2, eth1=10.0.3.1), Forwarding Table=Dynamic DV',
+    'r4': 'Router R4: DVRouter (eth0=10.0.3.2, eth1=10.0.4.1), Forwarding Table=Dynamic DV',
+    'd': 'Host D: IP=10.0.4.2/24, MAC=00:dd:00:00:00:04, App=EchoServerTCP (Port 4567)'
+  };
+  logVmTerm(`<span class="vm-log-info">[NODE INFO]</span> <strong>${nodeInfo[nodeId] || nodeId}</strong>`);
+}
+
+function runAllLabUnitTests() {
+  stopScenario();
+  switchVmTab('sim');
+  clearVmTerm();
+  logVmTerm(`<span class="vm-log-prompt">jacob@network-sim:~$</span> <span class="vm-log-cmd">pytest -v test_switch.py test_forwarding.py test_dvrouter.py test_buffer.py test_mysocket.py</span>`);
+  logVmTerm(`<span class="vm-log-info">============================= test session starts ==============================</span>`);
+  logVmTerm(`platform linux -- Python 3.10.12, pytest-7.4.0, rootdir: /home/jacob/cs460`);
+  logVmTerm(`collected 23 items<br>`);
+  
+  const testResults = [
+    { file: 'test_switch.py', name: 'test_switch_learning_and_flooding', status: 'PASSED' },
+    { file: 'test_switch.py', name: 'test_switch_port_eviction_and_aging', status: 'PASSED' },
+    { file: 'test_forwarding.py', name: 'test_longest_prefix_match_exact', status: 'PASSED' },
+    { file: 'test_forwarding.py', name: 'test_longest_prefix_match_overlapping_subnets', status: 'PASSED' },
+    { file: 'test_forwarding.py', name: 'test_default_route_fallback', status: 'PASSED' },
+    { file: 'test_dvrouter.py', name: 'test_dv_initial_advertisements', status: 'PASSED' },
+    { file: 'test_dvrouter.py', name: 'test_dv_bellman_ford_convergence', status: 'PASSED' },
+    { file: 'test_dvrouter.py', name: 'test_dv_split_horizon_poison_reverse', status: 'PASSED' },
+    { file: 'test_buffer.py', name: 'test_send_buffer_sliding_window', status: 'PASSED' },
+    { file: 'test_buffer.py', name: 'test_receive_buffer_in_order_reassembly', status: 'PASSED' },
+    { file: 'test_buffer.py', name: 'test_receive_buffer_out_of_order_gap_filling', status: 'PASSED' },
+    { file: 'test_mysocket.py', name: 'test_tcp_three_way_handshake_syn_ack', status: 'PASSED' },
+    { file: 'test_mysocket.py', name: 'test_tcp_reliable_stream_multiplexing', status: 'PASSED' },
+    { file: 'test_mysocket.py', name: 'test_tcp_connection_teardown_fin', status: 'PASSED' }
+  ];
+
+  testResults.forEach((t, i) => {
+    activeScenarioTimeouts.push(setTimeout(() => {
+      logVmTerm(`<span style="color:#94a3b8">${t.file}::${t.name}</span> <span style="color:#22c55e;font-weight:700">${t.status}</span>`);
+    }, (i + 1) * 90));
+  });
+
+  activeScenarioTimeouts.push(setTimeout(() => {
+    logVmTerm(`<br><span style="color:#22c55e;font-weight:700">======================= 23 passed in 3.65s ========================</span>`);
+    setLiveExplainer('<strong>PyTest Suite Passed:</strong> All 23 unit tests passed across Layer 2 Switching, Layer 3 Routing, Layer 4 TCP Buffers, and Socket State Machines.', 'UNIT TESTS PASSED', '#10b981');
+  }, (testResults.length + 1) * 90));
+}
+
+function runScenario(num) {
+  stopScenario();
+  switchVmTab('sim');
+  
+  document.querySelectorAll('.vm-scenario-bar button').forEach(b => {
+    if (b.id === `btn-scen${num}`) b.classList.add('active');
+    else if (b.id && b.id.startsWith('btn-scen')) b.classList.remove('active');
+  });
+
+  logVmTerm(`<span class="vm-log-prompt">jacob@network-sim:~/cs460$</span> <span class="vm-log-cmd">cougarnet --disable-ipv6 scenario${num}.cfg</span>`);
+
+  if (num === 1) {
+    setLiveExplainer('<strong>Scenario 1: Subnet Broadcasts:</strong> Host A broadcasts an ICMP Echo Request to <code>10.0.0.255</code>. Switch S1 floods the frame across all ports.', 'LAYER 2 (DATA LINK)', '#a855f7');
+    const steps = [
+      { delay: 200, fn: () => {
+        logVmTerm(`<span class="vm-log-info">[INIT]</span> Spawning virtual topology: Host A (10.0.0.1), Host B (10.0.0.2), Switch S1, Router R1 (10.0.0.3)`);
+      }},
+      { delay: 1000, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        setNodeBadge('a', '📤 TX Broadcast', 'tx');
+        setLiveExplainer('<strong>Step 1/3:</strong> Host A generates ICMP Echo broadcast to <code>10.0.0.255</code> with destination MAC <code>FF:FF:FF:FF:FF:FF</code>.', 'LAYER 2 (DATA LINK)', '#a855f7');
+        logVmTerm(`<span class="vm-log-time">T+5.0s</span> <span class="vm-log-scapy">[Host A]</span> Broadcasting ICMP Echo Request to subnet <strong style="color:#38bdf8">10.0.0.255</strong> (MAC FF:FF:FF:FF:FF:FF)`);
+      }},
+      { delay: 2000, fn: () => {
+        document.getElementById('node-s1').classList.add('active-tx');
+        setNodeBadge('s1', '⚡ Flooding Frame', 'purple');
+        setLiveExplainer('<strong>Step 2/3:</strong> Switch S1 learns Host A MAC address on port <code>s1-a</code> and replicates frame to ports <code>s1-b</code> and <code>s1-r1</code>.', 'LAYER 2 (DATA LINK)', '#a855f7');
+        logVmTerm(`<span class="vm-log-time">T+5.2s</span> <span class="vm-log-scapy">[Switch S1]</span> Flooding broadcast frame to interfaces s1-a, s1-b, s1-r1`);
+      }},
+      { delay: 3000, fn: () => {
+        document.getElementById('node-b').classList.add('active-rx');
+        document.getElementById('node-r1').classList.add('active-rx');
+        setNodeBadge('b', '📥 Accepted', 'rx');
+        setNodeBadge('r1', '📥 Accepted', 'rx');
+        setLiveExplainer('<strong>Step 3/3:</strong> Host B and Router R1 receive the broadcast on local subnet interfaces without packet loss.', 'LAYER 2 (DATA LINK)', '#a855f7');
+        logVmTerm(`<span class="vm-log-time">T+5.4s</span> <span class="vm-log-success">[Host B]</span> Received subnet broadcast (10.0.0.1 -> 10.0.0.255) — Accepted!`);
+        logVmTerm(`<span class="vm-log-time">T+5.4s</span> <span class="vm-log-success">[Router R1]</span> Received subnet broadcast on eth0 — Accepted!`);
+      }},
+      { delay: 4000, fn: () => {
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx', 'active-rx'));
+        clearAllNodeBadges();
+        setLiveExplainer('<strong>Scenario 1 Complete:</strong> Subnet broadcast flooding handled with 0 packet drops across Layer 2 switch.', 'PASS: L2 FLOODING', '#10b981');
+        logVmTerm(`<span class="vm-log-success">[PASS]</span> Scenario 1: Subnet broadcast handled with 0 packet drops.`);
+      }}
+    ];
+    steps.forEach(s => activeScenarioTimeouts.push(setTimeout(s.fn, s.delay)));
+  } else if (num === 2) {
+    setLiveExplainer('<strong>Scenario 2: Static Multi-Hop Forwarding:</strong> Host A pings Server D across 4 router hops (R1→R2→R3→R4) via CIDR Longest Prefix Matching.', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+    const steps = [
+      { delay: 400, fn: () => {
+        logVmTerm(`<span class="vm-log-info">[INIT]</span> Loading static forwarding entries for routers R1 -> R2 -> R3 -> R4...`);
+      }},
+      { delay: 900, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        setNodeBadge('a', '📤 Ping 10.0.4.2', 'tx');
+        setLiveExplainer('<strong>Step 1/4:</strong> Host A transmits ICMP Echo Request (seq=1, TTL=64) destined for Server D (10.0.4.2).', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+        logVmTerm(`<span class="vm-log-time">T+4.0s</span> <span class="vm-log-scapy">[Host A]</span> ping 10.0.4.2 (Host D): ICMP Echo Request (seq=1, ttl=64)`);
+      }},
+      { delay: 1800, fn: () => {
+        document.getElementById('node-r1').classList.add('active-tx');
+        document.getElementById('node-r2').classList.add('active-tx');
+        setNodeBadge('r1', '🔍 R1 LPM (TTL 63)', 'warn');
+        setNodeBadge('r2', '🔍 R2 LPM (TTL 62)', 'warn');
+        setLiveExplainer('<strong>Step 2/4:</strong> Routers R1 & R2 perform Longest Prefix Match lookups on CIDR forwarding table, decrementing TTL.', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+        logVmTerm(`<span class="vm-log-time">T+4.2s</span> <span class="vm-log-info">[Routers R1-R2]</span> Longest-prefix match forwarding lookup: next_hop 10.0.1.2 -> 10.0.2.2`);
+      }},
+      { delay: 2700, fn: () => {
+        document.getElementById('node-r3').classList.add('active-tx');
+        document.getElementById('node-r4').classList.add('active-tx');
+        setNodeBadge('r3', '🔍 R3 LPM (TTL 61)', 'warn');
+        setNodeBadge('r4', '🔍 R4 LPM (TTL 60)', 'warn');
+        setLiveExplainer('<strong>Step 3/4:</strong> Routers R3 & R4 route packet onto destination subnet <code>10.0.4.0/24</code>.', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+        logVmTerm(`<span class="vm-log-time">T+4.3s</span> <span class="vm-log-info">[Routers R3-R4]</span> Forwarding onto destination subnet 10.0.4.0/24 -> Host D`);
+      }},
+      { delay: 3600, fn: () => {
+        document.getElementById('node-d').classList.add('active-rx');
+        setNodeBadge('d', '📥 Ping Received', 'rx');
+        setLiveExplainer('<strong>Step 4/4:</strong> Server D receives ICMP packet and transmits Echo Reply back along reverse path.', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+        logVmTerm(`<span class="vm-log-time">T+4.5s</span> <span class="vm-log-success">[Host D]</span> ICMP Echo Request received from 10.0.0.1.`);
+        logVmTerm(`<span class="vm-log-time">T+5.0s</span> <span class="vm-log-scapy">[Host D]</span> ping 10.0.0.1 (Host A): ICMP Echo Reply sent in reverse.`);
+      }},
+      { delay: 4500, fn: () => {
+        document.getElementById('node-a').classList.add('active-rx');
+        setNodeBadge('a', '✅ 0.4ms RTT', 'rx');
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx'));
+        setLiveExplainer('<strong>Packet Returned:</strong> Bidirectional ping successful. Round-trip time 0.4ms across 4 routers.', 'LAYER 3 (ROUTING & LPM)', '#f59e0b');
+      }},
+      { delay: 5400, fn: () => {
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-rx'));
+        clearAllNodeBadges();
+        setLiveExplainer('<strong>Scenario 2 Complete:</strong> 4-hop bidirectional static IP forwarding verified with 0% packet loss!', 'PASS: L3 MULTI-HOP', '#10b981');
+        logVmTerm(`<span class="vm-log-success">[PASS]</span> Scenario 2: 4-hop bidirectional static forwarding verified!`);
+      }}
+    ];
+    steps.forEach(s => activeScenarioTimeouts.push(setTimeout(s.fn, s.delay)));
+  } else if (num === 3) {
+    setLiveExplainer('<strong>Scenario 3: Distance-Vector Routing:</strong> Dynamic Bellman-Ford protocol exchanges cost matrices over UDP until network convergence.', 'LAYER 3 (BELLMAN-FORD)', '#38bdf8');
+    const steps = [
+      { delay: 400, fn: () => {
+        logVmTerm(`<span class="vm-log-info">[INIT]</span> Initializing Distance-Vector Routing Protocol over UDP sockets...`);
+      }},
+      { delay: 1000, fn: () => {
+        document.getElementById('node-r1').classList.add('active-tx');
+        document.getElementById('node-r2').classList.add('active-tx');
+        setNodeBadge('r1', '📊 DV Advert', 'info');
+        setNodeBadge('r2', '📊 DV Advert', 'info');
+        setLiveExplainer('<strong>Step 1/3:</strong> Routers R1 & R2 advertise cost vectors {10.0.0.0/24: 1, 10.0.1.0/24: 1} to neighbors over UDP sockets.', 'LAYER 3 (BELLMAN-FORD)', '#38bdf8');
+        logVmTerm(`<span class="vm-log-time">T+1.0s</span> <span class="vm-log-dv">[DVRouter R1]</span> Broadcasting DV Advertisement: {10.0.0.0/24: 1, 10.0.1.0/24: 1}`);
+      }},
+      { delay: 2000, fn: () => {
+        document.getElementById('node-r3').classList.add('active-tx');
+        document.getElementById('node-r4').classList.add('active-tx');
+        setNodeBadge('r3', '🔄 Bellman-Ford', 'info');
+        setNodeBadge('r4', '🔄 Bellman-Ford', 'info');
+        setLiveExplainer('<strong>Step 2/3:</strong> Routers R3 & R4 compute distributed Bellman-Ford equation: <code>d(x,y) = min { c(x,v) + d(v,y) }</code>.', 'LAYER 3 (BELLMAN-FORD)', '#38bdf8');
+        logVmTerm(`<span class="vm-log-time">T+4.0s</span> <span class="vm-log-dv">[DVRouter R4]</span> Updated distance vector via R3. Forwarding table populated.`);
+      }},
+      { delay: 3000, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        document.getElementById('node-d').classList.add('active-rx');
+        setNodeBadge('a', '📤 Transmit', 'tx');
+        setNodeBadge('d', '📥 Delivered', 'rx');
+        setLiveExplainer('<strong>Step 3/3:</strong> Full convergence reached in 5 iterations. End-to-end packet delivery flows over dynamically discovered routes.', 'LAYER 3 (BELLMAN-FORD)', '#38bdf8');
+        logVmTerm(`<span class="vm-log-time">T+10.0s</span> <span class="vm-log-scapy">[Host A -> Host D]</span> ICMP Echo Request transmitted over dynamically discovered DV routes.`);
+      }},
+      { delay: 4000, fn: () => {
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx', 'active-rx'));
+        clearAllNodeBadges();
+        setLiveExplainer('<strong>Scenario 3 Complete:</strong> Distance-Vector Bellman-Ford protocol converged with 100% route accuracy!', 'PASS: DV CONVERGENCE', '#10b981');
+        logVmTerm(`<span class="vm-log-success">[PASS]</span> Scenario 3: DV Routing converged in 5 iterations. End-to-end connectivity established.`);
+      }}
+    ];
+    steps.forEach(s => activeScenarioTimeouts.push(setTimeout(s.fn, s.delay)));
+  } else if (num === 4) {
+    setLiveExplainer('<strong>Scenario 4: Multi-Hop TCP Streaming:</strong> Host A & B connect to EchoServerTCP on Server D via 3-way handshakes and sliding window buffers.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+    const steps = [
+      { delay: 400, fn: () => {
+        document.getElementById('node-d').classList.add('active-rx');
+        setNodeBadge('d', '🎧 LISTEN :4567', 'rx');
+        setLiveExplainer('<strong>Step 1/5:</strong> Server D starts <code>EchoServerTCP</code> daemon on <code>10.0.4.2:4567</code> in LISTEN state.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+10.0s</span> <span class="vm-log-tcp">[Host D]</span> Starting EchoServerTCP on <strong>10.0.4.2:4567</strong> (Socket State: <strong>LISTEN</strong>)`);
+      }},
+      { delay: 900, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        setNodeBadge('a', '🤝 SYN (Seq=1000)', 'tx');
+        setLiveExplainer('<strong>Step 2/5:</strong> Host A initiates RFC 793 Three-Way Handshake by sending a <code>SYN</code> packet (Seq=1000).', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+12.0s</span> <span class="vm-log-tcp">[Host A]</span> NetcatTCP connecting to 10.0.4.2:4567`);
+        logVmTerm(`<span class="vm-log-time">T+12.1s</span> <span class="vm-log-tcp">[TCP 3-Way]</span> A -> D: <strong style="color:#ec4899">SYN</strong> (Seq=1000)`);
+      }},
+      { delay: 1800, fn: () => {
+        document.getElementById('node-d').classList.add('active-tx');
+        setNodeBadge('d', '🤝 SYN-ACK (Seq=5000)', 'purple');
+        setLiveExplainer('<strong>Step 3/5:</strong> Server D responds with <code>SYN-ACK</code> (Seq=5000, Ack=1001), allocating TCP connection resources.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+12.3s</span> <span class="vm-log-tcp">[TCP 3-Way]</span> D -> A: <strong style="color:#a855f7">SYN-ACK</strong> (Seq=5000, Ack=1001)`);
+      }},
+      { delay: 2700, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        setNodeBadge('a', '✅ ESTABLISHED', 'rx');
+        setNodeBadge('d', '✅ ESTABLISHED', 'rx');
+        setLiveExplainer('<strong>Step 4/5:</strong> Host A returns final <code>ACK</code>. Both sockets enter <strong>ESTABLISHED</strong> state.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+12.5s</span> <span class="vm-log-tcp">[TCP 3-Way]</span> A -> D: <strong style="color:#22c55e">ACK</strong> (Seq=1001, Ack=5001) -> State: <strong>ESTABLISHED</strong>`);
+      }},
+      { delay: 3600, fn: () => {
+        setNodeBadge('a', '💬 "hello world"', 'tx');
+        setNodeBadge('d', '💬 Echo Reply', 'rx');
+        setLiveExplainer('<strong>Step 5/5:</strong> Sliding window buffers stream payload <code>"hello world (A)"</code> across 4 router hops and receive echo reply.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+13.0s</span> <span class="vm-log-cmd">[Host A Netcat]</span> Sent: <span style="color:#38bdf8">"hello world (A)"</span>`);
+        logVmTerm(`<span class="vm-log-time">T+13.4s</span> <span class="vm-log-success">[Host A Netcat]</span> Received Echo: <span style="color:#22c55e">"hello world (A)"</span>`);
+      }},
+      { delay: 4500, fn: () => {
+        document.getElementById('node-b').classList.add('active-tx');
+        setNodeBadge('b', '💬 Concurrent Client B', 'tx');
+        setLiveExplainer('<strong>Multiplexing Demo:</strong> Host B connects concurrently, demonstrating multi-client TCP multiplexing on Server D.', 'LAYER 4 (TRANSPORT TCP)', '#10b981');
+        logVmTerm(`<span class="vm-log-time">T+14.0s</span> <span class="vm-log-tcp">[Host B]</span> NetcatTCP connecting to 10.0.4.2:4567 (Multiplexed Session 2)`);
+        logVmTerm(`<span class="vm-log-time">T+15.0s</span> <span class="vm-log-cmd">[Host B Netcat]</span> Sent: <span style="color:#38bdf8">"hello internet (B)"</span> -> Echo: <span style="color:#22c55e">"hello internet (B)"</span>`);
+      }},
+      { delay: 5400, fn: () => {
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx', 'active-rx'));
+        clearAllNodeBadges();
+        setLiveExplainer('<strong>Scenario 4 Complete:</strong> Multi-hop TCP 3-way handshakes, sliding windows, and concurrent sessions verified!', 'PASS: TCP STREAMING', '#10b981');
+        logVmTerm(`<span class="vm-log-success">[PASS]</span> Scenario 4: Multi-hop TCP 3-Way Handshake & Netcat Multiplexing Verified!`);
+      }}
+    ];
+    steps.forEach(s => activeScenarioTimeouts.push(setTimeout(s.fn, s.delay)));
+  } else if (num === 5) {
+    setLiveExplainer('<strong>Scenario 5: Full-Stack Integration:</strong> Running custom switch.py, dvrouter.py, and mysocket.py together across all 5 layers simultaneously.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+    const steps = [
+      { delay: 400, fn: () => {
+        logVmTerm(`<span class="vm-log-info">[INIT]</span> Spawning CougarNet topology from <strong style="color:#38bdf8">scenario5.cfg</strong>...`);
+        logVmTerm(`<span class="vm-log-info">[INIT]</span> Switch: <code style="color:#38bdf8">switch.py</code>, Routers: <code style="color:#38bdf8">dvrouter.py</code>, Sockets: <code style="color:#38bdf8">mysocket.py</code>`);
+      }},
+      { delay: 900, fn: () => {
+        document.getElementById('node-d').classList.add('active-rx');
+        setNodeBadge('d', '🎧 L5 EchoServerTCP', 'rx');
+        setLiveExplainer('<strong>Phase 1: Application Layer (L5):</strong> EchoServerTCP initializes in LISTEN state on destination host D.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+        logVmTerm(`<span class="vm-log-time">T+7.0s</span> <span class="vm-log-tcp">[Host D]</span> Starting EchoServerTCP on <strong style="color:#22c55e">10.0.4.2:4567</strong> (Socket: <strong>LISTEN</strong>)`);
+      }},
+      { delay: 1800, fn: () => {
+        document.getElementById('node-r1').classList.add('active-tx');
+        document.getElementById('node-r4').classList.add('active-tx');
+        setNodeBadge('r1', '📊 L3 Bellman-Ford', 'info');
+        setNodeBadge('r4', '📊 L3 Bellman-Ford', 'info');
+        setLiveExplainer('<strong>Phase 2: Network Layer (L3):</strong> dvrouter.py instances establish dynamic multi-hop routing paths across the backbone.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+        logVmTerm(`<span class="vm-log-time">T+7.5s</span> <span class="vm-log-dv">[dvrouter.py]</span> Dynamic routing table synchronized across 4 router hops`);
+      }},
+      { delay: 2700, fn: () => {
+        document.getElementById('node-s1').classList.add('active-tx');
+        setNodeBadge('s1', '⚡ L2 Switch MAC', 'purple');
+        setLiveExplainer('<strong>Phase 3: Data Link Layer (L2):</strong> switch.py dynamically learns source MAC addresses and forwards frames.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+        logVmTerm(`<span class="vm-log-time">T+7.8s</span> <span class="vm-log-scapy">[switch.py]</span> Self-learning MAC table entries populated`);
+      }},
+      { delay: 3600, fn: () => {
+        document.getElementById('node-a').classList.add('active-tx');
+        document.getElementById('node-d').classList.add('active-rx');
+        setNodeBadge('a', '🤝 L4 SYN', 'tx');
+        setNodeBadge('d', '🤝 L4 SYN-ACK', 'purple');
+        setLiveExplainer('<strong>Phase 4: Transport Layer (L4):</strong> mysocket.py executes full 3-way handshake across all router hops.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+        logVmTerm(`<span class="vm-log-time">T+8.0s</span> <span class="vm-log-tcp">[Host A]</span> NetcatTCP connecting to 10.0.4.2:4567 (TCP 3-Way Handshake)`);
+        logVmTerm(`<span class="vm-log-time">T+8.2s</span> <span class="vm-log-scapy">[d] Received TCP SYN (10.0.0.1:52418 -> 10.0.4.2:4567) Flags: S, Seq=1000</span>`);
+        logVmTerm(`<span class="vm-log-time">T+8.3s</span> <span class="vm-log-scapy">[a] Received TCP SYN-ACK -> Sent ACK -> State: ESTABLISHED</span>`);
+      }},
+      { delay: 4500, fn: () => {
+        setNodeBadge('a', '💬 "hello world (A)"', 'tx');
+        document.getElementById('node-b').classList.add('active-tx');
+        setNodeBadge('b', '💬 "hello internet (B)"', 'tx');
+        setLiveExplainer('<strong>Phase 5: End-to-End Execution:</strong> Simultaneous multi-client TCP byte streams flowing with 100% data integrity.', 'LAYERS 1–5 (FULL-STACK)', '#ec4899');
+        logVmTerm(`<span class="vm-log-time">T+9.0s</span> <span class="vm-log-cmd">[Host A Netcat]</span> Sent: <span style="color:#38bdf8">"hello world (A)"</span> -> Echo Reply Received!`);
+        logVmTerm(`<span class="vm-log-time">T+10.0s</span> <span class="vm-log-tcp">[Host B]</span> NetcatTCP connecting to 10.0.4.2:4567 (Concurrent Session 2)`);
+        logVmTerm(`<span class="vm-log-time">T+11.0s</span> <span class="vm-log-cmd">[Host B Netcat]</span> Sent: <span style="color:#38bdf8">"hello internet (B)"</span> -> Echo: <span style="color:#22c55e">"hello internet (B)"</span>`);
+      }},
+      { delay: 5500, fn: () => {
+        document.querySelectorAll('.topo-node').forEach(n => n.classList.remove('active-tx', 'active-rx'));
+        clearAllNodeBadges();
+        setLiveExplainer('<strong>Scenario 5 Complete:</strong> Full-Stack Integration Verified! Custom switch.py, dvrouter.py, and mysocket.py running with 100% data integrity.', 'PASS: FULL-STACK L1-L5', '#10b981');
+        logVmTerm(`<span class="vm-log-success">[PASS]</span> Scenario 5: Full-Stack Integration Verified! Custom switch.py, dvrouter.py, and mysocket.py running with 100% data integrity.`);
+      }}
+    ];
+    steps.forEach(s => activeScenarioTimeouts.push(setTimeout(s.fn, s.delay)));
+  }
+}
+
+// Terminal CLI Input
+const vmCmdInp = document.getElementById('vm-cmd-inp');
+let vmCmdHist = ['pytest', 'cougarnet scenario5.cfg'];
+let vmHistIdx = vmCmdHist.length;
+
+if (vmCmdInp) {
+  vmCmdInp.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      if (vmHistIdx > 0) vmCmdInp.value = vmCmdHist[--vmHistIdx];
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      vmCmdInp.value = vmHistIdx < vmCmdHist.length - 1 ? vmCmdHist[++vmHistIdx] : (vmHistIdx = vmCmdHist.length, '');
+    } else if (e.key === 'Enter') {
+      const raw = vmCmdInp.value.trim();
+      vmCmdInp.value = '';
+      if (!raw) return;
+      vmCmdHist.push(raw);
+      vmHistIdx = vmCmdHist.length;
+
+      if (raw === 'clear' || raw === 'cls') {
+        clearVmTerm();
+        return;
+      }
+
+      logVmTerm(`<span class="vm-log-prompt">jacob@network-sim:~$</span> <span class="vm-log-cmd">${esc(raw)}</span>`);
+
+      const lower = raw.toLowerCase();
+      if (lower === 'pytest' || lower.startsWith('pytest') || lower.includes('unittest') || lower === 'test' || lower === 'test all' || lower === 'run tests') {
+        runAllLabUnitTests();
+      } else if (lower.includes('scenario 1') || lower.includes('scen 1') || lower === '1' || lower === 'scenario1') {
+        runScenario(1);
+      } else if (lower.includes('scenario 2') || lower.includes('scen 2') || lower === '2' || lower === 'scenario2') {
+        runScenario(2);
+      } else if (lower.includes('scenario 3') || lower.includes('scen 3') || lower === '3' || lower === 'scenario3') {
+        runScenario(3);
+      } else if (lower.includes('scenario 4') || lower.includes('scen 4') || lower === '4' || lower === 'scenario4') {
+        runScenario(4);
+      } else if (lower.includes('scenario 5') || lower.includes('scen 5') || lower === '5' || lower === 'scenario5' || lower.includes('scenario5.cfg')) {
+        runScenario(5);
+      } else if (lower === 'ls' || lower === 'ls -la') {
+        logVmTerm(`total 128<br>-rw-r--r-- 1 jacob jacob 11441 Aug 29 07:00 mysocket.py<br>-rw-r--r-- 1 jacob jacob  5055 Aug 29 07:00 dvrouter.py<br>-rw-r--r-- 1 jacob jacob  2864 Aug 29 07:00 forwarding_table.py<br>-rw-r--r-- 1 jacob jacob   395 Aug 29 07:00 switch.py<br>-rw-r--r-- 1 jacob jacob  2310 Aug 29 07:00 host.py<br>-rw-r--r-- 1 jacob jacob  2122 Aug 29 07:00 headers.py<br>-rw-r--r-- 1 jacob jacob   836 Aug 29 07:00 buffer.py<br>-rw-r--r-- 1 jacob jacob  4340 Aug 29 07:00 scenario5.py<br>-rw-r--r-- 1 jacob jacob  1073 Aug 29 07:00 echoserver.py<br>-rw-r--r-- 1 jacob jacob 11571 Aug 29 07:00 prefix.py<br>-rw-r--r-- 1 jacob jacob 13125 Aug 29 07:00 README.md`);
+      } else if (lower.startsWith('cat ')) {
+        const fn = raw.split(' ')[1];
+        if (NET_CODE_FILES[fn]) {
+          logVmTerm(`<div style="background:#07090f;border:1px solid rgba(255,255,255,0.1);border-radius:6px;margin:6px 0;padding:6px 0;max-height:280px;overflow-y:auto">${renderHighlightedCode(fn, NET_CODE_FILES[fn])}</div>`);
+        } else {
+          logVmTerm(`cat: ${fn}: No such file or directory`);
+        }
+      } else if (lower === 'help') {
+        logVmTerm(`Available Commands:<br>&nbsp;&nbsp;• <strong>pytest</strong> - Run All Lab Component Unit Tests<br>&nbsp;&nbsp;• <strong>scenario 1-5</strong> - Run specific network simulation scenario<br>&nbsp;&nbsp;• <strong>ls / cat &lt;filename&gt;</strong> - Inspect Python source code<br>&nbsp;&nbsp;• <strong>clear</strong> - Clear terminal logs`);
+      } else {
+        logVmTerm(`bash: ${esc(raw)}: command not found. Type 'help' or click a scenario button above.`);
+      }
+    }
+  });
+}
 
 // Rubberband selection on desktop
 const rband = document.getElementById('rband');
@@ -2007,6 +4925,54 @@ window.addEventListener('pointermove', (e) => {
   });
 });
 window.addEventListener('pointerup', () => { selecting = false; rband.style.display = 'none'; });
+
+// ================================================================
+// DESKTOP RIGHT-CLICK CONTEXT MENU
+// ================================================================
+const ctxMenu = document.getElementById('ctx-menu');
+
+document.getElementById('desktop').addEventListener('contextmenu', (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+  closeCtxMenu();
+  const menu = ctxMenu;
+  if (!menu) return;
+  const x = Math.min(e.clientX, window.innerWidth - 210);
+  const y = Math.min(e.clientY, window.innerHeight - (menu.scrollHeight || 240));
+  menu.style.left = x + 'px';
+  menu.style.top  = y + 'px';
+  menu.classList.add('open');
+  lucide.createIcons();
+});
+
+function closeCtxMenu() {
+  if (ctxMenu) ctxMenu.classList.remove('open');
+}
+
+window.addEventListener('pointerdown', (e) => {
+  if (ctxMenu && !ctxMenu.contains(e.target)) closeCtxMenu();
+}, true);
+
+window.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeCtxMenu();
+});
+
+// ================================================================
+// PC BOOTSTRAP: DEFAULT AUTOLAUNCH NOTEPAD
+// ================================================================
+window.addEventListener('DOMContentLoaded', () => {
+  show('notepad-win');
+  focusWin('notepad-win');
+  loadCodeFile('README.md');
+  loadRobotCodeFile('robot_controller.ino');
+  lucide.createIcons();
+});
+show('notepad-win');
+focusWin('notepad-win');
+loadCodeFile('README.md');
+loadRobotCodeFile('robot_controller.ino');
+lucide.createIcons();
 </script>
 </body>
 </html>
+
